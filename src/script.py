@@ -68,14 +68,15 @@ def get_supermarket_info():
     return store_list
 
 
-def get_product_info():
+def get_product_info(id):
     response = requests.get(
-        "https://www.cora.fr/article/713878/",
+        f"https://www.cora.fr/article/{id}/",
         headers=headers,
         cookies=cookies,
     )
 
     soup = bs(response.text, "html.parser")
+
     price_kg = soup.find("p", "c-product-detail__unitPrice").text.strip()
     price = soup.find("p", "c-price__amount").find_next().text.strip()
     prod_name = soup.find("h1", "c-product-detail__title").text.strip()
@@ -90,9 +91,15 @@ def get_product_info():
     except:
         nutri_score = None
 
+    res = {
+        "price/kg": price_kg,
+        "price": price,
+        "product name": prod_name,
+        "nutri-score": nutri_score,
+    }
+
     try:
         nut_table = soup.find("div", "c-nutritional-values__table")
-        nutritional_values = {}
 
         for row in nut_table.find_all("tr"):
             columns = row.find_all(["th", "td"])
@@ -100,22 +107,16 @@ def get_product_info():
             if len(columns) == 2 and len(columns[0]) > 0:
                 nutritional_value = columns[0].get_text(strip=True)
                 value = columns[1].get_text(strip=True)
-                nutritional_values[nutritional_value] = value
+                res[nutritional_value] = value
     except:
-        nutritional_values = None
+        pass
 
-    return {
-        "price/kg": price_kg,
-        "price": price,
-        "product name": prod_name,
-        "nutri-score": nutri_score,
-        "nutritional values": nutritional_values,
-    }
+    return res
 
 
 def main():
     # stores_info = get_supermarket_info()
-    res = get_product_info()
+    res = get_product_info(13858)
     print(res)
 
 
