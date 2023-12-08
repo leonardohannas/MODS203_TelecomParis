@@ -70,36 +70,43 @@ def get_supermarket_info():
 
 def get_product_info():
     response = requests.get(
-        "https://www.cora.fr/article/1051948/",
+        "https://www.cora.fr/article/713878/",
         headers=headers,
         cookies=cookies,
     )
 
     soup = bs(response.text, "html.parser")
     price_kg = soup.find("p", "c-product-detail__unitPrice").text.strip()
-    price_unit = soup.find("p", "c-price__amount").find_next().text.strip()
+    price = soup.find("p", "c-price__amount").find_next().text.strip()
     prod_name = soup.find("h1", "c-product-detail__title").text.strip()
-    nutri_score = (
-        soup.find("picture", "c-product-detail__nutriscore")
-        .find_next()
-        .get_attribute_list("alt")[0]
-        .split(" ")[1]
-    )
 
-    nut_table = soup.find("div", "c-nutritional-values__table")
-    nutritional_values = {}
+    try:
+        nutri_score = (
+            soup.find("picture", "c-product-detail__nutriscore")
+            .find_next()
+            .get_attribute_list("alt")[0]
+            .split(" ")[1]
+        )
+    except:
+        nutri_score = None
 
-    for row in nut_table.find_all("tr"):
-        columns = row.find_all(["th", "td"])
+    try:
+        nut_table = soup.find("div", "c-nutritional-values__table")
+        nutritional_values = {}
 
-        if len(columns) == 2 and len(columns[0]) > 0:
-            nutritional_value = columns[0].get_text(strip=True)
-            value = columns[1].get_text(strip=True)
-            nutritional_values[nutritional_value] = value
+        for row in nut_table.find_all("tr"):
+            columns = row.find_all(["th", "td"])
+
+            if len(columns) == 2 and len(columns[0]) > 0:
+                nutritional_value = columns[0].get_text(strip=True)
+                value = columns[1].get_text(strip=True)
+                nutritional_values[nutritional_value] = value
+    except:
+        nutritional_values = None
 
     return {
         "price/kg": price_kg,
-        "price unit": price_unit,
+        "price": price,
         "product name": prod_name,
         "nutri-score": nutri_score,
         "nutritional values": nutritional_values,
