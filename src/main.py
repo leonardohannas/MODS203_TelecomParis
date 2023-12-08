@@ -6,8 +6,7 @@ MAIN_URL = "https://www.cora.fr"
 
 
 def main():
-    columns = ["title", "nutriScore", "price", "price_kg_u", "category", "subcategory"]
-    df = pd.DataFrame(columns=columns)
+    df = pd.DataFrame()
 
     cookies = {
         "visid_incap_2483309": "DJ+ltefNRJ2QxFDd9uFs2HpicGUAAAAAQUIPAAAAAACvUU/aqsTVaXjO8ROgqKN4",
@@ -197,16 +196,16 @@ def main():
                 else:
                     df = pd.concat([df, d2])
 
-                print()
 
                 # break # Only first subsubcategory
 
             # break # Only first subcategory
 
         # break # Only first category
+        print()
 
     # print(df)
-    df.to_csv("231208cora.csv", index=True)
+    df.to_csv("231208cora.csv", index=False)
 
 
 if __name__ == "__main__":
