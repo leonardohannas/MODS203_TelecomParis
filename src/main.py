@@ -2,10 +2,10 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
 
+from datetime import datetime
 from script import get_product_info
 
 MAIN_URL = "https://www.cora.fr"
-
 
 def main():
     df = pd.DataFrame()
@@ -201,7 +201,8 @@ def main():
         print()
 
     # print(df)
-    df.to_csv("231208cora.csv", index=False)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    df.to_csv(timestamp+"_cora.csv", index=False)
 
 
 if __name__ == "__main__":
