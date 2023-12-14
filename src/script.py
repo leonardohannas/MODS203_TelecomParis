@@ -1,12 +1,13 @@
 import requests
 from bs4 import BeautifulSoup as bs
 
-def get_supermarket_info():
+def get_supermarket_info(headers):
     store_list = []
 
     for i in range(1, 200):
         response = requests.get(
-            f"https://api.cora.fr/api/magasins/{i}", headers=headers
+            f"https://api.cora.fr/api/magasins/{i}",
+            headers=headers
         )
 
         if response.status_code == 200:
