@@ -58,11 +58,14 @@ def get_product_info(id, headers, cookies):
     except:
         nutri_score = None
 
+    magasin_id = int(cookies["magasin_id"])
+
     res = {
         "price/kg": price_kg,
         "price": price,
         "product name": prod_name,
         "nutri-score": nutri_score,
+        "magasin_id": magasin_id,
     }
 
     try:
