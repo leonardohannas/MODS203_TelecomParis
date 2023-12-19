@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as bs
 
 from datetime import datetime
 from script import get_product_info
+from script import rename_columns
 
 MAIN_URL = "https://www.cora.fr"
 
@@ -175,13 +176,24 @@ def main():
                         id_prod = prod.find("a", class_="c-link-to c-product-list-item--grid__title c-link-to--hover-primary-light").get("href").split("/")[2]
                         id_prod = str(id_prod)
 
+                        magasin_id = int(cookies["magasin_id"])
+
+                        data = {
+                            "magasin_id": magasin_id,
+                            "product_id": id_prod,
+                            "category": title_cat,
+                            "subcategory": title_sub,
+                            "sub_sub_category": title_sub_sub,
+                        }
+
                         # Get product info
-                        data = get_product_info(id_prod, headers, cookies)
+                        # data = get_product_info(id_prod, headers, cookies)
+                        data.update(get_product_info(id_prod, headers, cookies))
 
                         # save information in dictionary
-                        data["category"] = title_cat
-                        data["subcategory"] = title_sub
-                        data["sub_sub_category"] = title_sub_sub
+                        # data["category"] = title_cat
+                        # data["subcategory"] = title_sub
+                        # data["sub_sub_category"] = title_sub_sub
 
                         info.append(data)
 
@@ -200,6 +212,7 @@ def main():
         
         print()
 
+    df = rename_columns(df)
     # print(df)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     df.to_csv("data/"+timestamp+"_cora.csv", index=False)
