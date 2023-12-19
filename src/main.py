@@ -202,7 +202,7 @@ def main():
 
     # print(df)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    df.to_csv(timestamp+"_cora.csv", index=False)
+    df.to_csv("data/"+timestamp+"_cora.csv", index=False)
 
 
 if __name__ == "__main__":
