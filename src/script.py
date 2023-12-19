@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
+import re
 
 def get_supermarket_info(headers):
     store_list = []
@@ -28,6 +29,16 @@ def get_supermarket_info(headers):
     return store_list
 
 
+def clean_value(text):
+    text_match = re.search(r'(\d+([.,]{1}\d{1,2}){1}?)', text)
+    if text_match:
+        float_value = float(text_match.group(1).replace(',', '.'))
+    else:
+        float_value = None
+    
+    return float_value
+
+
 def get_product_info(id, headers, cookies):
 
     print(f"Getting product info for {id}...")
@@ -40,11 +51,11 @@ def get_product_info(id, headers, cookies):
     soup = bs(response.text, features="html.parser")
 
     try:
-        price_kg = soup.find("p", "c-product-detail__unitPrice").text.strip()
+        price_um = clean_value(soup.find("p", "c-product-detail__unitPrice").text.strip())
     except:
-        price_kg = None
+        price_um = None
 
-    price = soup.find("p", "c-price__amount").find_next().text.strip()
+    price = clean_value(soup.find("p", "c-price__amount").find_next().text.strip())
 
     prod_name = soup.find("h1", "c-product-detail__title").text.strip()
 
@@ -58,14 +69,11 @@ def get_product_info(id, headers, cookies):
     except:
         nutri_score = None
 
-    magasin_id = int(cookies["magasin_id"])
-
     res = {
-        "price/kg": price_kg,
+        "price/um": price_um,
         "price": price,
         "product name": prod_name,
         "nutri-score": nutri_score,
-        "magasin_id": magasin_id,
     }
 
     try:
@@ -75,13 +83,33 @@ def get_product_info(id, headers, cookies):
             columns = row.find_all(["th", "td"])
 
             if len(columns) == 2 and len(columns[0]) > 0:
-                nutritional_value = columns[0].get_text(strip=True)
-                value = columns[1].get_text(strip=True)
-                res[nutritional_value] = value
+                nutrient = columns[0].get_text(strip=True)
+                value = clean_value(columns[1].get_text(strip=True))
+                res[nutrient] = value
     except:
         pass
          
     return res
+
+
+def rename_columns(df):
+    columns = {
+        "price/um": "price/u [€/u.m]",
+        "price": "price [€]",
+        "Valeur énergétique en kJ": "Valeur énergétique [kJ]",
+        "Valeur énergétique en kCal": "Valeur énergétique [kCal]",
+        "Matières grasses": "Matières grasses [g]",
+        "Dont acides gras saturés": "Dont acides gras saturés [g]",
+        "Glucides": "Glucides [g]",
+        "Dont sucres": "Dont sucres [g]",
+        "Protéines": "Protéines [g]",
+        "Sel": "Sel [g]",
+        "Fibres alimentaires": "Fibres alimentaires [g]",
+        "Sodium": "Sodium [mg]",
+        "Acide gras Omega 3": "Acide gras Omega 3 [g]",
+    }
+
+    return df.rename(columns=columns)
 
 
 def main():
