@@ -60,9 +60,11 @@ def get_product_info(id, headers, cookies):
     prod_name = soup.find("h1", "c-product-detail__title").text.strip()
 
     try:
+        nutri_score = soup.find("div", "c-product-detail__line").find("picture", class_="c-product-detail__nutriscore")
+        if nutri_score is None:
+            nutri_score = soup.find("div", "c-product-detail__line").find("picture", class_="c-product-detail__nutriscore__first_picto")
         nutri_score = (
-            soup.find("picture", "c-product-detail__nutriscore")
-            .find_next()
+            nutri_score.find("img")
             .get_attribute_list("alt")[0]
             .split(" ")[1]
         )
