@@ -1,14 +1,15 @@
+import re
+
 import requests
 from bs4 import BeautifulSoup as bs
-import re
+
 
 def get_supermarket_info(headers):
     store_list = []
 
     for i in range(1, 200):
         response = requests.get(
-            f"https://api.cora.fr/api/magasins/{i}",
-            headers=headers
+            f"https://api.cora.fr/api/magasins/{i}", headers=headers
         )
 
         if response.status_code == 200:
@@ -30,17 +31,16 @@ def get_supermarket_info(headers):
 
 
 def clean_value(text):
-    text_match = re.search(r'(\d+([.,]{1}\d{1,2}){1}?)', text)
+    text_match = re.search(r"(\d+([.,]{1}\d{1,2}){1}?)", text)
     if text_match:
-        float_value = float(text_match.group(1).replace(',', '.'))
+        float_value = float(text_match.group(1).replace(",", "."))
     else:
         float_value = None
-    
+
     return float_value
 
 
 def get_product_info(id, headers, cookies):
-
     print(f"Getting product info for {id}...")
 
     response = requests.get(
@@ -51,7 +51,9 @@ def get_product_info(id, headers, cookies):
     soup = bs(response.text, features="html.parser")
 
     try:
-        price_um = clean_value(soup.find("p", "c-product-detail__unitPrice").text.strip())
+        price_um = clean_value(
+            soup.find("p", "c-product-detail__unitPrice").text.strip()
+        )
     except:
         price_um = None
 
@@ -60,14 +62,14 @@ def get_product_info(id, headers, cookies):
     prod_name = soup.find("h1", "c-product-detail__title").text.strip()
 
     try:
-        nutri_score = soup.find("div", "c-product-detail__line").find("picture", class_="c-product-detail__nutriscore")
-        if nutri_score is None:
-            nutri_score = soup.find("div", "c-product-detail__line").find("picture", class_="c-product-detail__nutriscore__first_picto")
-        nutri_score = (
-            nutri_score.find("img")
-            .get_attribute_list("alt")[0]
-            .split(" ")[1]
+        nutri_score = soup.find("div", "c-product-detail__line").find(
+            "picture", class_="c-product-detail__nutriscore"
         )
+        if nutri_score is None:
+            nutri_score = soup.find("div", "c-product-detail__line").find(
+                "picture", class_="c-product-detail__nutriscore__first_picto"
+            )
+        nutri_score = nutri_score.find("img").get_attribute_list("alt")[0].split(" ")[1]
     except:
         nutri_score = None
 
@@ -90,7 +92,7 @@ def get_product_info(id, headers, cookies):
                 res[nutrient] = value
     except:
         pass
-         
+
     return res
 
 
@@ -118,6 +120,7 @@ def main():
     # stores_info = get_supermarket_info()
     res = get_product_info(13858)
     print(res)
+
 
 if __name__ == "__main__":
     main()

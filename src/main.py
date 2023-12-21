@@ -1,12 +1,12 @@
+from datetime import datetime
+
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
-
-from datetime import datetime
-from script import get_product_info
-from script import rename_columns
+from script import get_product_info, rename_columns
 
 MAIN_URL = "https://www.cora.fr"
+
 
 def main():
     df = pd.DataFrame()
@@ -51,7 +51,6 @@ def main():
         "x-d-token": "3:8jmZyWCaZoeH4oduCZQ35Q==:SpNZSBzdvC6snUkfHexXtkzX1xv7TJBSOTcE3HVGk+dM3BG3gx2iKXU/Jq13ZjFIQ7G2lDT8UmMzN56S5Mu4U3wcaw6yyyhCzRfvUHWza1jgq7LfQ8rHaVfMgxPFKeO4+5i764do8AzPFoP7d/7T8yDlRR6r37vW++j9J1iH7ZaGzudJvd0fo/SRQGckS8SVD0hePdTzwBVzsMhGPXmO+oCQu7qQs4bRuCvWoVusC9W5lhkGaEL/tMsvcbGxcjmUnT6+ZcBP3qmm0ea/VB1HNukNnpBAQ2hmRWff9Cx5p1kXh57mO9yxNcStNT8kMUm6k6gLMy+F4xCDjLvJ939tWQUOvmoLeMS/+U4+OYdIrloA5WOo1rR49XUU8oE7oMv4Ob9R4ByNh+B8476gwfwTUSH1AN64reQHfSKkI6Mcnav4x632pjcnGqbtV0QiIQQqjfZV/tlhg5V7eOsLmkDVeVjKRGUfoV5kTuPD/bHER2zMcuMkJX6c2shzqi05fJMO4imF+VSMvO3cyvMrhVE0+A==:nPiaHspBdRrbhOIOKQCYv/paCiPPystmkoKdYXIlhlI=",
     }
 
-
     # headers = {
     #     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0",
     #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -81,7 +80,7 @@ def main():
         "ul", class_="c-list children-categories__list"
     ).find_all("li", class_="c-list__item children-categories__list-item")
     # categories = categories[3:-6]
-    categories = categories[7:8] #surgeles
+    categories = categories[7:8]  # surgeles
 
     for cat in categories:
         link_rel = cat.find(
@@ -167,13 +166,21 @@ def main():
                     )
 
                     for prod in prods:
-                        
-                        disabled = prod.find("div", class_="c-product-list-item--grid__disabled-text")
+                        disabled = prod.find(
+                            "div", class_="c-product-list-item--grid__disabled-text"
+                        )
 
                         if disabled:
                             continue
 
-                        id_prod = prod.find("a", class_="c-link-to c-product-list-item--grid__title c-link-to--hover-primary-light").get("href").split("/")[2]
+                        id_prod = (
+                            prod.find(
+                                "a",
+                                class_="c-link-to c-product-list-item--grid__title c-link-to--hover-primary-light",
+                            )
+                            .get("href")
+                            .split("/")[2]
+                        )
                         id_prod = str(id_prod)
 
                         magasin_id = int(cookies["magasin_id"])
@@ -204,18 +211,18 @@ def main():
                     df = pd.concat([df, d2])
 
                 print(df)
-                break # Only first subsubcategory
+                break  # Only first subsubcategory
 
-            break # Only first subcategory
+            break  # Only first subcategory
 
-        break # Only first category
-        
+        break  # Only first category
+
         print()
 
     df = rename_columns(df)
     # print(df)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    df.to_csv("data/"+timestamp+"_cora.csv", index=False)
+    df.to_csv("data/" + timestamp + "_cora.csv", index=False)
 
 
 if __name__ == "__main__":
