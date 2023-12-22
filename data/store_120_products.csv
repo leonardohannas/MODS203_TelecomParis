@@ -1,4 +1,4 @@
-magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/u [€/u.m],price [€],nutri-score,Valeur énergétique [kJ],Valeur énergétique [kCal],Matières grasses [g],Dont acides gras saturés [g],Dont acides gras mono-insaturés [g],Glucides [g],Dont sucres [g],Protéines [g],Fibres alimentaires [g],Sel [g],Sodium [mg]
+magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/unity [€/u],price [€],nutri-score,Valeur énergétique [kJ],Valeur énergétique [kCal],Matières grasses [g],Dont acides gras saturés [g],Dont acides gras mono-insaturés [g],Glucides [g],Dont sucres [g],Protéines [g],Fibres alimentaires [g],Sel [g],Sodium [mg]
 120,1125496,Fruits et légumes,Fruits et légumes bio,Fruits bio,Citron bio Primofiori,4.29,0.69,,,,,,,,,,,,
 120,2338746,Fruits et légumes,Fruits et légumes bio,Fruits bio,Banane bio 5 fruits,3.05,2.29,,,,,,,,,,,,
 120,982534,Fruits et légumes,Fruits et légumes bio,Fruits bio,Pomme bio barquette 4 fruits,5.98,2.99,,,,,,,,,,,,

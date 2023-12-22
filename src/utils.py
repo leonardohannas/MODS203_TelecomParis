@@ -20,7 +20,7 @@ def rename_columns(filename):
     df = pd.read_csv(os.path.dirname(PATH) + "\data\\" + filename)
 
     columns = {
-        "price/um": "price/u [€/u.m]",
+        "price/unity": "price/unity [€/u]",
         "price": "price [€]",
         "Valeur énergétique en kJ": "Valeur énergétique [kJ]",
         "Valeur énergétique en kCal": "Valeur énergétique [kCal]",

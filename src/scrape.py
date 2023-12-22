@@ -173,7 +173,7 @@ def get_product_info(id, headers, cookies):
         res (dict): dict containing all the info of the product
     """
 
-    # The price/um, the nutri-score and the nutritional values are not always available,
+    # The price/unity, the nutri-score and the nutritional values are not always available,
     # we add a try/except to check if they are available
 
     print(f"Getting product info for {id}...")
@@ -186,11 +186,11 @@ def get_product_info(id, headers, cookies):
     soup = bs(response.text, features="html.parser")
 
     try:
-        price_um = clean_value(
+        price_unity = clean_value(
             soup.find("p", "c-product-detail__unitPrice").text.strip()
         )
     except:
-        price_um = None
+        price_unity = None
 
     price = clean_value(soup.find("p", "c-price__amount").find_next().text.strip())
 
@@ -209,7 +209,7 @@ def get_product_info(id, headers, cookies):
         nutri_score = None
 
     res = {
-        "price/um": price_um,
+        "price/unity": price_unity,
         "price": price,
         "product name": prod_name,
         "nutri-score": nutri_score,
@@ -315,7 +315,9 @@ def get_products(sub_subcat, title_cat, title_sub):
             # get product info
             data.update(get_product_info(id_prod, headers, cookies))
 
-            save_product_info(data, cookies["magasin_id"] + "_products" + ".csv")
+            save_product_info(
+                data, "store_" + cookies["magasin_id"] + "_products" + ".csv"
+            )
 
 
 def main():
@@ -332,7 +334,7 @@ def main():
                 get_products(sub_subcat, title_cat, title_sub)
 
     # add unit of measure to csv header
-    rename_columns(cookies["magasin_id"] + "_products" + ".csv")
+    rename_columns("store_" + cookies["magasin_id"] + "_products" + ".csv")
 
     # then we get all the info of all the supermarkets
 
