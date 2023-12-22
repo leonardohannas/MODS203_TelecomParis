@@ -173,6 +173,9 @@ def get_product_info(id, headers, cookies):
         res (dict): dict containing all the info of the product
     """
 
+    # The price/um, the nutri-score and the nutritional values are not always available,
+    # we add a try/except to check if they are available
+
     print(f"Getting product info for {id}...")
 
     response = requests.get(
@@ -285,6 +288,7 @@ def get_products(sub_subcat, title_cat, title_sub):
                 "div", class_="c-product-list-item--grid__disabled-text"
             )
 
+            # if the product is disabled, we do not get the info and we continue
             if disabled:
                 continue
 
