@@ -9,6 +9,14 @@ PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 def rename_columns(filename):
+    """
+    Rename columns of a csv file
+
+    Parameters:
+    ----------
+        filename (str): name of the csv file
+    """
+
     df = pd.read_csv(os.path.dirname(PATH) + "\data\\" + filename)
 
     columns = {
@@ -33,6 +41,18 @@ def rename_columns(filename):
 
 
 def clean_value(text):
+    """
+    Clean a string to get a float value
+
+    Parameters:
+    ----------
+        text (str): string to clean
+
+    Returns:
+    -------
+        float_value (float): float value of the string
+    """
+
     text_match = re.search(r"(\d+([.,]{1}\d{1,2}){1}?)", text)
     if text_match:
         float_value = float(text_match.group(1).replace(",", "."))
@@ -43,6 +63,14 @@ def clean_value(text):
 
 
 def get_cookies_headers(filename="config.json"):
+    """
+    Get cookies and headers from a json file
+
+    Parameters:
+    ----------
+        filename (str): name of the json file
+    """
+
     try:
         with open(PATH + "/" + filename, "r") as file:
             config = json.load(file)
@@ -52,12 +80,30 @@ def get_cookies_headers(filename="config.json"):
 
 
 def save_supermarket_info(data, filename):
+    """
+    Save supermarket info in a csv file
+
+    Parameters:
+    ----------
+        data (dict/list of dict): data to save
+        filename (str): name of the csv file
+    """
+
     df = pd.DataFrame(data)
 
     df.to_csv(os.path.dirname(PATH) + "\data\\" + filename, index=False)
 
 
 def save_product_info(data, filename):
+    """
+    Save product info in a csv file
+
+    Parameters:
+    ----------
+        data (dict): data to save
+        filename (str): name of the csv file
+    """
+
     fieldnames = [
         "magasin_id",
         "product_id",
@@ -102,6 +148,4 @@ def save_product_info(data, filename):
         encoding="utf-8",
     ) as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
-
-        # Write the data
         writer.writerow(data)

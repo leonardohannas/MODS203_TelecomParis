@@ -13,6 +13,18 @@ cookies, headers = get_cookies_headers()
 
 
 def get_supermarket_info(headers):
+    """
+    Get all the info of all the supermarkets
+
+    Parameters:
+    ----------
+        headers (dict): headers to use for the request
+
+    Returns:
+    -------
+        store_list (list of dict): list of all the supermarkets info
+    """
+
     store_list = []
 
     for i in range(1, 200):
@@ -20,6 +32,7 @@ def get_supermarket_info(headers):
             f"https://api.cora.fr/api/magasins/{i}", headers=headers
         )
 
+        # if the status code is 200, it means that the supermarket exists
         if response.status_code == 200:
             print(f"Getting info for supermarket {i}...")
 
@@ -41,6 +54,18 @@ def get_supermarket_info(headers):
 
 
 def get_categories(magasin_id=120):
+    """
+    Get all the categories of a specific supermarket
+
+    Parameters:
+    ----------
+        magasin_id (int): id of the supermarket
+
+    Returns:
+    -------
+        categories (list): list of all the categories
+    """
+
     # set the magasin_id cookie in order to get the categories of the store
     cookies.__setitem__("magasin_id", str(magasin_id))
 
@@ -61,6 +86,19 @@ def get_categories(magasin_id=120):
 
 
 def get_subcategories(category):
+    """
+    Get all the subcategories of a specific category
+
+    Parameters:
+    ----------
+        category: category
+
+    Returns:
+    -------
+        title_cat (str): title of the category
+        subcategories (list): list of all the subcategories
+    """
+
     link_rel = category.find(
         "a",
         class_="c-title-image c-children-categories__item c-button c-title-image--radius-full c-title-image--border",
@@ -71,7 +109,7 @@ def get_subcategories(category):
 
     print("Title cat: ", title_cat)
 
-    # Get all the subcategories
+    # get all the subcategories
     response_sub = requests.get(link_abs, cookies=cookies, headers=headers)
     soup_sub = bs(response_sub.text, features="html.parser")
 
@@ -83,6 +121,19 @@ def get_subcategories(category):
 
 
 def get_subsubcategories(subcat):
+    """
+    Get all the subcategories of a specific subcategory
+
+    Parameters:
+    ----------
+        subcat: subcategory
+
+    Returns:
+    -------
+        title_sub (str): title of the subcategory
+        sub_subcategories (list): list of all the subcategories
+    """
+
     link_rel_sub = subcat.find(
         "a",
         class_="c-title-image c-children-categories__item c-button c-title-image--radius-full c-title-image--border",
@@ -93,7 +144,7 @@ def get_subsubcategories(subcat):
 
     print("------Title sub: ", title_sub)
 
-    # Get all the subcategories
+    # get all the subcategories
     response_sub_sub = requests.get(link_abs_sub, cookies=cookies, headers=headers)
     soup_sub_sub = bs(response_sub_sub.text, features="html.parser")
 
@@ -105,6 +156,20 @@ def get_subsubcategories(subcat):
 
 
 def get_product_info(id, headers, cookies):
+    """
+    Get all the info of a specific product
+
+    Parameters:
+    ----------
+        id (str): id of the product
+        headers (dict): headers to use for the request
+        cookies (dict): cookies to use for the request
+
+    Returns:
+    -------
+        res (dict): dict containing all the info of the product
+    """
+
     print(f"Getting product info for {id}...")
 
     response = requests.get(
@@ -161,6 +226,16 @@ def get_product_info(id, headers, cookies):
 
 
 def get_products(sub_subcat, title_cat, title_sub):
+    """
+    Get all the products of a specific subsubcategory
+
+    Parameters:
+    ----------
+        sub_subcat: subsubcategory
+        title_cat (str): title of the category
+        title_sub (str): title of the subcategory
+    """
+
     link_rel_sub_sub = sub_subcat.find(
         "a",
         class_="c-title-image c-children-categories__item c-button c-title-image--radius-full c-title-image--border",
@@ -171,7 +246,7 @@ def get_products(sub_subcat, title_cat, title_sub):
 
     print("-------------Title sub sub: ", title_sub_sub)
 
-    # Get all the products
+    # get all the products
     i = 0
 
     while True:
@@ -188,9 +263,10 @@ def get_products(sub_subcat, title_cat, title_sub):
             headers=headers,
         )
 
-        # If there is a redirect, break. This means that there are no more products in this subcategory
+        # if there is a redirect, break. This means that there are no more products in this subcategory
         if response_prod.history:
             break
+
         soup_prod = bs(response_prod.text, features="html.parser")
 
         prods = soup_prod.find(
@@ -229,14 +305,14 @@ def get_products(sub_subcat, title_cat, title_sub):
                 "sub_sub_category": title_sub_sub,
             }
 
-            # Get product info
+            # get product info
             data.update(get_product_info(id_prod, headers, cookies))
 
             save_product_info(data, cookies["magasin_id"] + "_products" + ".csv")
 
 
 def main():
-    # First we get all the info of products of a specific supermarket
+    # first we get all the info of products of a specific supermarket
     categories = get_categories()
 
     for cat in categories:
@@ -251,7 +327,7 @@ def main():
     # add unit of measure to csv header
     rename_columns(cookies["magasin_id"] + "_products" + ".csv")
 
-    # Then we get all the info of all the supermarkets
+    # then we get all the info of all the supermarkets
     store_list = get_supermarket_info(headers)
     save_supermarket_info(store_list, cookies["magasin_id"] + "_supermarket" + ".csv")
 
