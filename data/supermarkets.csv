@@ -1,0 +1,85 @@
+magasin_id,name,adress,postal code,city,latitude,longitude
+1,Dijon,"Route de Beaune, Perrigny-lès-Dijon",21160,Perrigny les dijon,47.2704586258,5.0035427725
+72,Alès,"Quai du mas d'hours
+BP 20219",30104,Alès Cedex,44.1126654809,4.096759299
+73,Amphion,"RD 1005  
+Amphion",74500,PUBLIER,46.3908762209,6.5261565597
+74,Arcueil,"Centre commercial Forum 20
+75 avenue Aristide Briand",94110,Arcueil,48.8052598743,2.3255062427
+75,Auxerre,53 avenue de Paris,89470,Monéteau,47.8448500303,3.5519833872
+76,Saint-Avold,"Zone commerciale du Heckenwald 
+BP 10014",57740,Longeville-lès-Saint-Avold,49.111423,6.694049
+77,Belfort,route de Montbéliard,90400,Andelnans,47.5983706628,6.8615550542
+79,Blois,"Route de Vendôme
+Villebarou - b.p.3417",41034,Blois Cedex,47.6221579711,1.2962194206
+80,Bruay,"1115, avenue de la Libération
+BP 34",62701,Bruay-la-Buissière Cedex,50.4949462713,2.5719957359
+82,Cambrai,2 avenue Georges Nuttin,59400,Cambrai,50.1489053857,3.2218018235
+84,Clermont-Ferrand,26 avenue de l'Europe,63370,Lempdes,45.7790428005,3.1974005835
+87,Creil,RD 1016,60740,Saint-Maximin Cedex,49.2366608932,2.4700104762
+88,Caen,la croix vautier,14980,ROTS,49.1991833604,-0.4601216558
+89,Colmar,Zone commerciale du Buhlfeld Houssen,68019,Colmar Cedex,48.1263093565,7.3684719312
+90,Courrières,RN 319,62710,Courrières,50.4453861242,2.9460714758
+91,Dorlisheim,1 rue Mercure,67129,Molsheim Cedex,48.5269298025,7.4966779354
+92,Saint-Dié,183 rue Ernest Charlier,88100,Sainte-Marguerite,48.2724172414,6.9682416379
+94,Dole,RN 73,39100,Choisey,47.065879926,5.4545074783
+96,Dornach,"258, rue de Belfort
+BP 2418",68067,Mulhouse Cedex,47.740222759,7.2922226999
+99,Dreux,"Parc Commercial les Coralines
+Rue des Bas Buissons",28109,Dreux Cedex,48.7489876165,1.3447896143
+100,Dunkerque,Rue Jacquard BP 39,59411,Coudekerque Branche Cedex,51.0163731709,2.3802742805
+101,Saint-Dizier,BP 245,52112,Saint-Dizier Cedex,48.649967,4.960075
+102,Ermont,Avenue du Président Georges Pompidou,95122,Ermont Cedex,48.9884531968,2.2467983228
+103,Essey-lès-Nancy,Av. de Saulxures,54270,Essey-lès-Nancy,48.7046088773,6.2445814048
+104,Evreux,"Bld de Normandie
+BP 986",27009,Evreux Cedex,49.0231294649,1.1355248573
+105,Forbach,"BP 90088
+Avenue de l'Europe",57602,Forbach Cedex,49.1745429098,6.8820482875
+106,Flers-Villeneuve d'Ascq,"18, rue Jules Guesde",59650,Villeneuve d'Ascq,50.6361692024,3.1202058386
+107,Garges,boulevard de la Muette,95141,Garges-lès-Gonesse Cedex,48.9747335505,2.416622396
+108,Grosbliederstroff,15 avenue marchande,57520,Grosbliederstroff,49.1352911555,7.0449935665
+110,Haguenau,"Route du Rhin
+CS 70148",67503,Haguenau Cedex,48.802199288,7.8359883097
+115,Lens,"RN 47 - route de la Bassée
+CS 50010",62881,Vendin le Vieil Cedex 01,50.4603372134,2.8259658502
+116,Livry-Gargan,"2-20, allée de l'Est",93190,Livry-Gargan Cedex,48.9275890306,2.5530114573
+118,Limoges,"1, Place de Beaubreuil
+CS 41063",87051,Limoges Cedex,45.8797235605,1.2920488444
+119,Lunéville,CD 31,54300,Moncel-lès-Lunéville,48.5783474569,6.5207804149
+120,Massy,Avenue de l'Europe,91885,Massy cedex,48.7264243781,2.2775803429
+121,Metz-Technopôle,10 bd de la Solidarité - BP 85010,57071,Metz Cedex 3,49.106231136,6.2269277543
+122,Sainte-Marie-Aux-Chênes,RD643 - BP 30008,57255,Sainte-Marie-aux-Chênes,49.1973204958,5.9949016148
+123,Mondelange,"1, rue de Bousse
+BP20",57303,Hagondange Cedex,49.2603302143,6.1757512005
+124,Montbéliard,route de Bethoncourt cd 136 bis,25200,Montbéliard,47.5284914957,6.8088361345
+125,Moulins-lès-Metz,CORA - BP 50099,57164,Moulins-lès-Metz Cedex,49.0849653999,6.1110252919
+129,Nancy Houdemont,B.P. 70059,54182,Heillecourt Cedex,48.6400750985,6.1837431515
+131,Reims Cormontreuil,Route de Louvois,51350,CORMONTREUIL,49.215320568,4.0540479894
+132,Remiremont,"26 route de bussang
+BP 20150",88205,Remiremont Cedex,48.0034531422,6.6123414074
+133,Reims Neuvillette,CS 70045,51721,Reims Cedex,49.286967,4.022641
+135,Rennes,"Bd de la Giraudais
+Zone Rive Ouest",35740,Pacé,48.1386869669,-1.7672960486
+136,Sarrebourg,"route de phalsbourg
+BP 60240",57402,Sarrebourg Cedex,48.7391903171,7.06872597
+137,Saint-Malo,"centre commercial
+
+""Le moulin du domaine""
+
+CS70019",35432,Saint-Jouan-des-Guérets CEDEX,48.6060666813,-1.9788520041
+138,Soissons,3 avenue Raymonde Fiolet,02207,Soissons Cedex,49.3689748977,3.3125927159
+140,Saint-Quentin,Route de Bohain,02100,Saint-Quentin,49.866781,3.290849
+141,Sarreguemines,route de Bitche,57208,Sarreguemines,49.1177561634,7.0941385452
+142,Strasbourg Mundo',"route métropolitaine 63
+
+BP 91074",67452,Mundolsheim Cedex,48.6536401542,7.7264592911
+143,Toul,"678, avenue du Général Bigeard BP 55",54203,Toul Cedex,48.6640132714,5.8877125604
+145,Verdun,Avenue de Metz,55100,Verdun,49.1425255404,5.4072061268
+146,Vesoul,Boulevard Kennedy - BP 40209,70004,Vesoul Cedex,47.6258293782,6.1710347157
+147,Vichy,Allée des Ailes,03200,Vichy,46.1424795698,3.4146978698
+148,Villers Semeuse,Route départementale 764,08000,Villers-Semeuse,49.7338747793,4.7538474502
+149,Val d'Yerres,Centre Commercial Val d'Yerres 2,91800,Boussy-Saint-Antoine,48.6817313332,2.5343746246
+150,Wattignies,Rue Clémenceau,59139,Wattignies,50.5923883345,3.0517739744
+151,Wittenheim,"130, route de Soultz",68271,Wittenheim Cedex,47.8101955201,7.3125491644
+164,Pavillons-sous-Bois,AVENUE GEORGES POMPIDOU,93320,LES PAVILLONS SOUS BOIS,48.9132908,2.4988329
+167,National,1 rue du Chenil - Domaine de Beaubourg,77435,MARNE LA VALLEE CEDEX 2,0.0,0.0
