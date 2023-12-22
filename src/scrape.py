@@ -1,6 +1,9 @@
+import os
+
 import requests
 from bs4 import BeautifulSoup as bs
 from utils import (
+    PATH,
     clean_value,
     get_cookies_headers,
     rename_columns,
@@ -328,8 +331,11 @@ def main():
     rename_columns(cookies["magasin_id"] + "_products" + ".csv")
 
     # then we get all the info of all the supermarkets
-    store_list = get_supermarket_info(headers)
-    save_supermarket_info(store_list, cookies["magasin_id"] + "_supermarket" + ".csv")
+
+    # if the file already exists, we do not get the info again
+    if not os.path.isfile((os.path.dirname(PATH) + "\data\\supermarkets.csv")):
+        store_list = get_supermarket_info(headers)
+        save_supermarket_info(store_list, "supermarkets" + ".csv")
 
 
 if __name__ == "__main__":
