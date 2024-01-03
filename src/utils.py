@@ -149,3 +149,28 @@ def save_product_info(data, filename):
     ) as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writerow(data)
+
+
+def save_html_to_file(html_content, file_name, folder_path="html_files"):
+    """
+    Save html content to a file.
+
+    Parameters:
+    ----------
+        html_content (str): The HTML content to be saved.
+        file_name (str): The name of the file to be created.
+        folder_path (str, optional): The path to the folder where the file will be saved. Defaults to "html_files".
+
+    Returns:
+    ----------
+    None
+    """
+    if not os.path.exists(folder_path):
+        os.mkdir(folder_path)
+        
+    full_file_path = folder_path + '/' + file_name + ".html"
+    
+    file = open(full_file_path, 'w', encoding='utf-8')
+    file.write(html_content)
+    
+    file.close()
