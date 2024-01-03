@@ -151,26 +151,37 @@ def save_product_info(data, filename):
         writer.writerow(data)
 
 
-def save_html_to_file(html_content, file_name, folder_path="html_files"):
+def save_html_to_file(html_content, file_path):
     """
     Save html content to a file.
 
     Parameters:
     ----------
         html_content (str): The HTML content to be saved.
-        file_name (str): The name of the file to be created.
-        folder_path (str, optional): The path to the folder where the file will be saved. Defaults to "html_files".
+        file_path (str): The path to the file to be created.
 
     Returns:
     ----------
     None
     """
-    if not os.path.exists(folder_path):
-        os.mkdir(folder_path)
-        
-    full_file_path = folder_path + '/' + file_name + ".html"
-    
-    file = open(full_file_path, 'w', encoding='utf-8')
+    file = open(file_path, 'w', encoding='utf-8')
     file.write(html_content)
     
     file.close()
+    
+    
+def save_response(file_name, response_text):
+    """
+    Save the given response text to a file.
+
+    Parameters:
+    ----------
+        file_name (str): The name of the file to save the response to.
+        response_text (str): The text to be saved as the response.
+
+    Returns:
+    ----------
+        None
+    """
+    with open(file_name, 'w') as file:
+        file.write(response_text)
