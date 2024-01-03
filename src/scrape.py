@@ -10,7 +10,6 @@ from utils import (
     rename_columns,
     save_html_to_file,
     save_product_info,
-    save_response,
     save_supermarket_info,
 )
 
@@ -36,13 +35,16 @@ def get_supermarket_info(headers):
         response = requests.get(
             f"https://api.cora.fr/api/magasins/{i}", headers=headers
         )
+        
+        response_text = response.text
 
         # if the status code is 200, it means that the supermarket exists
         if response.status_code == 200:
             
             # Saving the response in a html file.
             file_name = f"store_{i}.html"
-            save_response(file_name, response.text)
+            file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+            save_html_to_file(response_text, file_path)
             
             print(f"Getting info for supermarket {i}...")
 

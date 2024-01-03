@@ -169,19 +169,3 @@ def save_html_to_file(html_content, file_path):
     
     file.close()
     
-    
-def save_response(file_name, response_text):
-    """
-    Save the given response text to a file.
-
-    Parameters:
-    ----------
-        file_name (str): The name of the file to save the response to.
-        response_text (str): The text to be saved as the response.
-
-    Returns:
-    ----------
-        None
-    """
-    with open(file_name, 'w') as file:
-        file.write(response_text)
