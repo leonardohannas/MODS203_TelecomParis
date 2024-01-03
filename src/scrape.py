@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -13,7 +14,6 @@ from utils import (
 
 MAIN_URL = "https://www.cora.fr"
 cookies, headers = get_cookies_headers()
-
 
 def get_supermarket_info(headers):
     """
@@ -321,27 +321,40 @@ def get_products(sub_subcat, title_cat, title_sub):
 
 
 def main():
-    # first we get all the info of products of a specific supermarket
-    categories = get_categories()
 
-    for cat in categories:
-        title_cat, subcategories = get_subcategories(cat)
+    # we get all the info of all the supermarkets
 
-        for subcat in subcategories:
-            title_sub, sub_subcategories = get_subsubcategories(subcat)
-
-            for sub_subcat in sub_subcategories:
-                get_products(sub_subcat, title_cat, title_sub)
-
-    # add unit of measure to csv header
-    rename_columns("store_" + cookies["magasin_id"] + "_products" + ".csv")
-
-    # then we get all the info of all the supermarkets
-
-    # if the file already exists, we do not get the info again
-    if not os.path.isfile((os.path.dirname(PATH) + "\data\\supermarkets.csv")):
+    # if the file already exists, we do not retrieve the info again
+    if not os.path.isfile((os.path.dirname(PATH) + "/data/supermarkets.csv")):
+        print("Getting supermarkets info from the web...")
         store_list = get_supermarket_info(headers)
         save_supermarket_info(store_list, "supermarkets" + ".csv")
+        stores_info = pd.DataFrame(store_list)
+        print(stores_info.head())
+    else:
+        # we get the info about the stores from the supermarkets.csv file
+        print("Getting supermarkets info from the csv file...")
+        stores_info = pd.read_csv(os.path.dirname(PATH) + "/data/supermarkets.csv")
+
+    # we get the id of the stores
+    stores_id = stores_info["magasin_id"].tolist()
+
+    # since the info about the store is in the cookie, we modify the cookies with the id of the store
+    for store_id in stores_id:
+        # first we get all the info of products of a specific supermarket
+        categories = get_categories(store_id)
+
+        for cat in categories:
+            title_cat, subcategories = get_subcategories(cat)
+
+            for subcat in subcategories:
+                title_sub, sub_subcategories = get_subsubcategories(subcat)
+
+                for sub_subcat in sub_subcategories:
+                    get_products(sub_subcat, title_cat, title_sub)
+
+        # add unit of measure to csv header
+        rename_columns("store_" + cookies["magasin_id"] + "_products" + ".csv")
 
 
 if __name__ == "__main__":
