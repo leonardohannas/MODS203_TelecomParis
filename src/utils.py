@@ -164,8 +164,7 @@ def save_html_to_file(html_content, file_path):
     ----------
     None
     """
-    file = open(file_path, 'w', encoding='utf-8')
+    file = open(file_path, "w", encoding="utf-8")
     file.write(html_content)
-    
+
     file.close()
-    
