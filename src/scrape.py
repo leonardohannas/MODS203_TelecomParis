@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import sys
 
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup as bs
 from utils import (
@@ -370,7 +372,10 @@ def main():
 
 if __name__ == "__main__":
 
-    with open('../data/logs/log.txt', 'w+') as file:
+    current_time = datetime.now()
+    formatted_time = current_time.strftime("%Y%m%d_%H%M%S")
+
+    with open('../data/logs/'+formatted_time+'_errors.txt', 'w+') as file:
 
         # Redirect stdout to the file
         sys.stderr = file
