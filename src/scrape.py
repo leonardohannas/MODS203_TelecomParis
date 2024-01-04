@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import sys
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -85,7 +86,7 @@ def get_categories(magasin_id=120):
         "ul", class_="c-list children-categories__list"
     ).find_all("li", class_="c-list__item children-categories__list-item")
 
-    return categories[3:11]  # we take only category concerning food
+    return categories[4:12]  # we take only category concerning food
 
 
 def get_subcategories(category):
@@ -284,9 +285,14 @@ def get_products(sub_subcat, title_cat, title_sub):
         )
 
         for prod in prods:
+            # disabled = prod.find(
+            #     "div", class_="c-product-list-item--grid__disabled-text"
+            # )
+
             disabled = prod.find(
-                "div", class_="c-product-list-item--grid__disabled-text"
+                "div", class_="c-product-list-item__disabled c-product-list-item--grid__disabled"
             )
+
 
             # if the product is disabled, we do not get the info and we continue
             if disabled:
@@ -313,11 +319,17 @@ def get_products(sub_subcat, title_cat, title_sub):
             }
 
             # get product info
-            data.update(get_product_info(id_prod, headers, cookies))
+            # If something goes bad, we caught the exception.
+            try:
+                data.update(get_product_info(id_prod, headers, cookies))
 
-            save_product_info(
+                save_product_info(
                 data, "store_" + cookies["magasin_id"] + "_products" + ".csv"
             )
+            except Exception as e:
+                print(f"An error occurred while scraping the product with id {id_prod} : {e}")
+
+            
 
 
 def main():
@@ -358,4 +370,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+
+    with open('../data/logs/log.txt', 'w+') as file:
+        # Redirect stdout to the file
+        sys.stdout = file
+
+        main()
+
