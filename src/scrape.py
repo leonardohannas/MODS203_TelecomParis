@@ -416,13 +416,6 @@ def get_products(sub_subcat, title_cat, title_sub):
                 print(f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\nError: {e}")
 
 def main():
-    
-    if not os.path.exists(os.path.dirname(PATH) + "/data/html_files"):
-        os.mkdir(os.path.dirname(PATH) + "/data/html_files")
-
-    if not os.path.exists(os.path.dirname(PATH) + "/data/logs"):
-        os.mkdir(os.path.dirname(PATH) + "/data/logs")
-
     # we get all the info of all the supermarkets
 
     # if the file already exists, we do not retrieve the info again
@@ -459,6 +452,12 @@ def main():
 
 
 if __name__ == "__main__":
+
+    if not os.path.exists(os.path.dirname(PATH) + "/data/html_files"):
+        os.mkdir(os.path.dirname(PATH) + "/data/html_files")
+
+    if not os.path.exists(os.path.dirname(PATH) + "/data/logs"):
+        os.mkdir(os.path.dirname(PATH) + "/data/logs")
 
     current_time = datetime.now()
     formatted_time = current_time.strftime("%Y%m%d_%H%M%S")
