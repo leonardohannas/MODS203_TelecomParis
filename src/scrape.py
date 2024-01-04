@@ -11,6 +11,7 @@ from utils import (
     clean_value,
     get_cookies_headers,
     rename_columns,
+    save_html_to_file,
     save_product_info,
     save_supermarket_info,
 )
@@ -37,9 +38,17 @@ def get_supermarket_info(headers):
         response = requests.get(
             f"https://api.cora.fr/api/magasins/{i}", headers=headers
         )
+        
+        response_text = response.text
 
         # if the status code is 200, it means that the supermarket exists
         if response.status_code == 200:
+            
+            # Saving the response in a html file.
+            file_name = f"store_{i}.html"
+            file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+            save_html_to_file(response_text, file_path)
+            
             print(f"Getting info for supermarket {i}...")
 
             data = response.json()["data"]["attributes"]
@@ -77,12 +86,26 @@ def get_categories(magasin_id=120):
 
     print(f"Getting categories for supermarket {magasin_id}...")
 
-    response_sub = requests.get(
-        "https://www.cora.fr/faire_mes_courses-c-176362",
-        cookies=cookies,
-        headers=headers,
-    )
-    soup_sub = bs(response_sub.text, features="html.parser")
+    file_name = f"categories_store_{cookies['magasin_id']}.html"
+    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    
+    # If the html file does not exist, we get it from the web and save it
+    if not os.path.isfile(file_path):
+                          
+        response_sub = requests.get(
+            "https://www.cora.fr/faire_mes_courses-c-176362",
+            cookies=cookies,
+            headers=headers,
+        )
+        
+        response_text = response_sub.text
+        save_html_to_file(response_text, file_path)
+        
+    else:
+        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+            response_text = file.read() 
+    
+    soup_sub = bs(response_text, features="html.parser")
 
     categories = soup_sub.find(
         "ul", class_="c-list children-categories__list"
@@ -115,9 +138,27 @@ def get_subcategories(category):
 
     print("Title cat: ", title_cat)
 
-    # get all the subcategories
-    response_sub = requests.get(link_abs, cookies=cookies, headers=headers)
-    soup_sub = bs(response_sub.text, features="html.parser")
+    file_name = f"cat_{title_cat}_store_{cookies['magasin_id']}.html"
+    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    
+    # If the html file does not exist, we get it from the web and save it
+    if not os.path.isfile(file_path):
+        
+        # Get all the subcategories                  
+        response_sub = requests.get(
+            link_abs,
+            cookies=cookies,
+            headers=headers,
+        )
+        
+        response_text = response_sub.text
+        save_html_to_file(response_text, file_path)
+        
+    else:
+        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+            response_text = file.read() 
+    
+    soup_sub = bs(response_text, features="html.parser")
 
     subcategories = soup_sub.find(
         "ul", class_="c-list children-categories__list"
@@ -150,9 +191,27 @@ def get_subsubcategories(subcat):
 
     print("------Title sub: ", title_sub)
 
-    # get all the subcategories
-    response_sub_sub = requests.get(link_abs_sub, cookies=cookies, headers=headers)
-    soup_sub_sub = bs(response_sub_sub.text, features="html.parser")
+    file_name = f"subcategory_{title_sub}_store_{cookies['magasin_id']}.html"
+    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    
+    # If the html file does not exist, we get it from the web and save it
+    if not os.path.isfile(file_path):
+            
+        # Get all the subcategories                  
+        response_sub_sub = requests.get(
+            link_abs_sub,
+            cookies=cookies,
+            headers=headers,
+        )
+        
+        response_text = response_sub_sub.text
+        save_html_to_file(response_text, file_path)
+
+    else:
+        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+            response_text = file.read()
+    
+    soup_sub_sub = bs(response_text, features="html.parser")
 
     sub_subcategories = soup_sub_sub.find(
         "ul", class_="c-list children-categories__list"
@@ -180,13 +239,28 @@ def get_product_info(id, headers, cookies):
     # we add a try/except to check if they are available
 
     print(f"Getting product info for {id}...")
+    
+    # Cheking if the file already exists.
+    file_name = f"product_{id}_store_{cookies['magasin_id']}.html"
+    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    
+   # If the html file does not exist, we get it from the web and save it
+    if not os.path.isfile(file_path):
+        
+        response = requests.get(
+            f"https://www.cora.fr/article/{id}/",
+            headers=headers,
+            cookies=cookies,
+        )
+        
+        response_text = response.text
+        save_html_to_file(response_text, file_path)
 
-    response = requests.get(
-        f"https://www.cora.fr/article/{id}/",
-        headers=headers,
-        cookies=cookies,
-    )
-    soup = bs(response.text, features="html.parser")
+    else:
+        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+            response_text = file.read()
+    
+    soup = bs(response_text, features="html.parser")
 
     try:
         price_unity = clean_value(
@@ -257,26 +331,38 @@ def get_products(sub_subcat, title_cat, title_sub):
 
     # get all the products
     i = 0
-
     while True:
         i += 1
 
-        params = {
+        # Cheking if the file already exists.
+        file_name = f"{title_cat}_{title_sub}_{title_sub_sub}_page_{i}_store_{cookies['magasin_id']}.html"
+        file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+        
+        # If the html file does not exist, we get it from the web and save it
+        if not os.path.isfile(file_path):
+            
+            params = {
             "pageindex": str(i),
-        }
+            }
 
-        response_prod = requests.get(
-            link_abs_sub_sub,
-            params=params,
-            cookies=cookies,
-            headers=headers,
-        )
+            response_prod = requests.get(
+                link_abs_sub_sub,
+                params=params,
+                cookies=cookies,
+                headers=headers,
+            )
 
-        # if there is a redirect, break. This means that there are no more products in this subcategory
-        if response_prod.history:
-            break
+            # if there is a redirect, break. This means that there are no more products in this subcategory
+            if response_prod.history:
+                break
+            
+            response_text = response_prod.text
+            save_html_to_file(response_text, file_path)            
+        else:
+            with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+                response_text = file.read()
 
-        soup_prod = bs(response_prod.text, features="html.parser")
+        soup_prod = bs(response_text, features="html.parser")
 
         prods = soup_prod.find(
             "ul",
@@ -320,20 +406,22 @@ def get_products(sub_subcat, title_cat, title_sub):
                 "sub_sub_category": title_sub_sub,
             }
 
-            # get product info
-            # If something goes bad, we caught the exception.
+           # get and save product info
+           # If something goes bad, we caught the exception and print it.
             try:
-                data.update(get_product_info(id_prod, headers, cookies))
-
-                save_product_info(
-                data, "store_" + cookies["magasin_id"] + "_products" + ".csv"
-            )
+              data.update(get_product_info(id_prod, headers, cookies))
+              save_product_info(
+                data, "store_" + cookies["magasin_id"] + "_products" + ".csv")
             except Exception as e:
-                print(f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\n Error: {e}", file=sys.stderr)
-
-            
+                print(f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\nError: {e})
 
 def main():
+    
+    if not os.path.exists(os.path.dirname(PATH) + "/data/html_files"):
+        os.mkdir(os.path.dirname(PATH) + "/data/html_files")
+
+    if not os.path.exists(os.path.dirname(PATH) + "/data/logs"):
+        os.mkdir(os.path.dirname(PATH) + "/data/logs")
 
     # we get all the info of all the supermarkets
 
