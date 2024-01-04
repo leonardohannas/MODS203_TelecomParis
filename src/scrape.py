@@ -327,10 +327,9 @@ def get_products(sub_subcat, title_cat, title_sub):
                 data, "store_" + cookies["magasin_id"] + "_products" + ".csv"
             )
             except Exception as e:
-                print(f"An error occurred while scraping the product with id {id_prod} : {e}")
+                print(f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\n Error: {e}", file=sys.stderr)
 
             
-
 
 def main():
 
@@ -372,8 +371,9 @@ def main():
 if __name__ == "__main__":
 
     with open('../data/logs/log.txt', 'w+') as file:
+
         # Redirect stdout to the file
-        sys.stdout = file
+        sys.stderr = file
 
         main()
 
