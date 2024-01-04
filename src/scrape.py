@@ -266,7 +266,8 @@ def get_product_info(id, headers, cookies):
         price_unity = clean_value(
             soup.find("p", "c-product-detail__unitPrice").text.strip()
         )
-    except:
+    except Exception as e:
+        print(f"Error trying to clean/retrieve price/unity for product {id} and store {cookies['magasin_id']}.\nError: {e}", file=sys.stderr)
         price_unity = None
 
     price = clean_value(soup.find("p", "c-price__amount").find_next().text.strip())
@@ -286,7 +287,7 @@ def get_product_info(id, headers, cookies):
         nutri_score = None
 
     res = {
-        "price/unity": price_unity,
+        "price/um": price_unity,
         "price": price,
         "product name": prod_name,
         "nutri-score": nutri_score,
@@ -373,14 +374,9 @@ def get_products(sub_subcat, title_cat, title_sub):
         )
 
         for prod in prods:
-            # disabled = prod.find(
-            #     "div", class_="c-product-list-item--grid__disabled-text"
-            # )
-
             disabled = prod.find(
                 "div", class_="c-product-list-item__disabled c-product-list-item--grid__disabled"
             )
-
 
             # if the product is disabled, we do not get the info and we continue
             if disabled:
@@ -410,10 +406,9 @@ def get_products(sub_subcat, title_cat, title_sub):
            # If something goes bad, we caught the exception and print it.
             try:
               data.update(get_product_info(id_prod, headers, cookies))
-              save_product_info(
-                data, "store_" + cookies["magasin_id"] + "_products" + ".csv")
+              save_product_info(data, "store_" + cookies["magasin_id"] + "_products" + ".csv")
             except Exception as e:
-                print(f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\nError: {e}")
+                print(f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\nError: {e}", file=sys.stderr)
 
 def main():
     # we get all the info of all the supermarkets
@@ -466,6 +461,7 @@ if __name__ == "__main__":
 
         # Redirect stdout to the file
         sys.stderr = file
+        print("Init...\n", file=sys.stderr)
 
         main()
 
