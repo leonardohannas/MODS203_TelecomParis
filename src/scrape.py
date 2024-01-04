@@ -135,7 +135,7 @@ def get_subcategories(category):
 
     print("Title cat: ", title_cat)
 
-    file_name = f"category_{title_cat}_store_{cookies['magasin_id']}.html"
+    file_name = f"cat_{title_cat}_store_{cookies['magasin_id']}.html"
     file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
     
     # If the html file does not exist, we get it from the web and save it
@@ -154,7 +154,6 @@ def get_subcategories(category):
     else:
         with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
             response_text = file.read() 
-    
     
     soup_sub = bs(response_text, features="html.parser")
 
@@ -188,7 +187,6 @@ def get_subsubcategories(subcat):
     title_sub = subcat.find("div", class_="c-title-image__label").text.strip()
 
     print("------Title sub: ", title_sub)
-
 
     file_name = f"subcategory_{title_sub}_store_{cookies['magasin_id']}.html"
     file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
@@ -253,9 +251,8 @@ def get_product_info(id, headers, cookies):
         )
         
         response_text = response.text
-        
         save_html_to_file(response_text, file_path)
-        
+
     else:
         with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
             response_text = file.read()
@@ -331,26 +328,38 @@ def get_products(sub_subcat, title_cat, title_sub):
 
     # get all the products
     i = 0
-
     while True:
         i += 1
 
-        params = {
+        # Cheking if the file already exists.
+        file_name = f"{title_cat}_{title_sub}_{title_sub_sub}_page_{i}_store_{cookies['magasin_id']}.html"
+        file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+        
+        # If the html file does not exist, we get it from the web and save it
+        if not os.path.isfile(file_path):
+            
+            params = {
             "pageindex": str(i),
-        }
+            }
 
-        response_prod = requests.get(
-            link_abs_sub_sub,
-            params=params,
-            cookies=cookies,
-            headers=headers,
-        )
+            response_prod = requests.get(
+                link_abs_sub_sub,
+                params=params,
+                cookies=cookies,
+                headers=headers,
+            )
 
-        # if there is a redirect, break. This means that there are no more products in this subcategory
-        if response_prod.history:
-            break
+            # if there is a redirect, break. This means that there are no more products in this subcategory
+            if response_prod.history:
+                break
+            
+            response_text = response_prod.text
+            save_html_to_file(response_text, file_path)            
+        else:
+            with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+                response_text = file.read()
 
-        soup_prod = bs(response_prod.text, features="html.parser")
+        soup_prod = bs(response_text, features="html.parser")
 
         prods = soup_prod.find(
             "ul",
@@ -391,16 +400,17 @@ def get_products(sub_subcat, title_cat, title_sub):
 
             # get product info
             data.update(get_product_info(id_prod, headers, cookies))
-
             save_product_info(
                 data, "store_" + cookies["magasin_id"] + "_products" + ".csv"
             )
-
 
 def main():
     
     if not os.path.exists(os.path.dirname(PATH) + "/data/html_files"):
         os.mkdir(os.path.dirname(PATH) + "/data/html_files")
+
+    if not os.path.exists(os.path.dirname(PATH) + "/data/logs"):
+        os.mkdir(os.path.dirname(PATH) + "/data/logs")
 
     # we get all the info of all the supermarkets
 
