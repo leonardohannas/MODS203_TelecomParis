@@ -37,7 +37,7 @@ def rename_columns(filename):
 
     df = df.rename(columns=columns)
 
-    df.to_csv(os.path.dirname(PATH) + "\data\\" + filename, index=False)
+    df.to_csv(os.path.dirname(PATH) + "/data/" + filename, index=False)
 
 
 def clean_value(text):
@@ -91,7 +91,7 @@ def save_supermarket_info(data, filename):
 
     df = pd.DataFrame(data)
 
-    df.to_csv(os.path.dirname(PATH) + "\data\\" + filename, index=False)
+    df.to_csv(os.path.dirname(PATH) + "/data/" + filename, index=False)
 
 
 def save_product_info(data, filename):
@@ -131,9 +131,9 @@ def save_product_info(data, filename):
     data = {key: value for key, value in data.items() if key in fieldnames}
 
     # Create the file if it doesn't exist
-    if not os.path.isfile(os.path.dirname(PATH) + "\data\\" + filename):
+    if not os.path.isfile(os.path.dirname(PATH) + "/data/" + filename):
         with open(
-            os.path.dirname(PATH) + "\data\\" + filename,
+            os.path.dirname(PATH) + "/data/" + filename,
             mode="w",
             newline="",
             encoding="utf-8",
@@ -142,7 +142,7 @@ def save_product_info(data, filename):
             writer.writeheader()
 
     with open(
-        os.path.dirname(PATH) + "\data\\" + filename,
+        os.path.dirname(PATH) + "/data/" + filename,
         mode="a",
         newline="",
         encoding="utf-8",

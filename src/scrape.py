@@ -1,4 +1,8 @@
 import os
+import pandas as pd
+import sys
+
+from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -13,7 +17,6 @@ from utils import (
 
 MAIN_URL = "https://www.cora.fr"
 cookies, headers = get_cookies_headers()
-
 
 def get_supermarket_info(headers):
     """
@@ -85,7 +88,7 @@ def get_categories(magasin_id=120):
         "ul", class_="c-list children-categories__list"
     ).find_all("li", class_="c-list__item children-categories__list-item")
 
-    return categories[3:11]  # we take only category concerning food
+    return categories[4:12]  # we take only category concerning food
 
 
 def get_subcategories(category):
@@ -284,9 +287,14 @@ def get_products(sub_subcat, title_cat, title_sub):
         )
 
         for prod in prods:
+            # disabled = prod.find(
+            #     "div", class_="c-product-list-item--grid__disabled-text"
+            # )
+
             disabled = prod.find(
-                "div", class_="c-product-list-item--grid__disabled-text"
+                "div", class_="c-product-list-item__disabled c-product-list-item--grid__disabled"
             )
+
 
             # if the product is disabled, we do not get the info and we continue
             if disabled:
@@ -313,36 +321,64 @@ def get_products(sub_subcat, title_cat, title_sub):
             }
 
             # get product info
-            data.update(get_product_info(id_prod, headers, cookies))
+            # If something goes bad, we caught the exception.
+            try:
+                data.update(get_product_info(id_prod, headers, cookies))
 
-            save_product_info(
+                save_product_info(
                 data, "store_" + cookies["magasin_id"] + "_products" + ".csv"
             )
+            except Exception as e:
+                print(f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\n Error: {e}", file=sys.stderr)
 
+            
 
 def main():
-    # first we get all the info of products of a specific supermarket
-    categories = get_categories()
 
-    for cat in categories:
-        title_cat, subcategories = get_subcategories(cat)
+    # we get all the info of all the supermarkets
 
-        for subcat in subcategories:
-            title_sub, sub_subcategories = get_subsubcategories(subcat)
-
-            for sub_subcat in sub_subcategories:
-                get_products(sub_subcat, title_cat, title_sub)
-
-    # add unit of measure to csv header
-    rename_columns("store_" + cookies["magasin_id"] + "_products" + ".csv")
-
-    # then we get all the info of all the supermarkets
-
-    # if the file already exists, we do not get the info again
-    if not os.path.isfile((os.path.dirname(PATH) + "\data\\supermarkets.csv")):
+    # if the file already exists, we do not retrieve the info again
+    if not os.path.isfile((os.path.dirname(PATH) + "/data/supermarkets.csv")):
+        print("Getting supermarkets info from the web...")
         store_list = get_supermarket_info(headers)
         save_supermarket_info(store_list, "supermarkets" + ".csv")
+        stores_info = pd.DataFrame(store_list)
+        print(stores_info.head())
+    else:
+        # we get the info about the stores from the supermarkets.csv file
+        print("Getting supermarkets info from the csv file...")
+        stores_info = pd.read_csv(os.path.dirname(PATH) + "/data/supermarkets.csv")
+
+    # we get the id of the stores
+    stores_id = stores_info["magasin_id"].tolist()
+
+    # since the info about the store is in the cookie, we modify the cookies with the id of the store
+    for store_id in stores_id:
+        # first we get all the info of products of a specific supermarket
+        categories = get_categories(store_id)
+
+        for cat in categories:
+            title_cat, subcategories = get_subcategories(cat)
+
+            for subcat in subcategories:
+                title_sub, sub_subcategories = get_subsubcategories(subcat)
+
+                for sub_subcat in sub_subcategories:
+                    get_products(sub_subcat, title_cat, title_sub)
+
+        # add unit of measure to csv header
+        rename_columns("store_" + cookies["magasin_id"] + "_products" + ".csv")
 
 
 if __name__ == "__main__":
-    main()
+
+    current_time = datetime.now()
+    formatted_time = current_time.strftime("%Y%m%d_%H%M%S")
+
+    with open('../data/logs/'+formatted_time+'_errors.txt', 'w+') as file:
+
+        # Redirect stdout to the file
+        sys.stderr = file
+
+        main()
+
