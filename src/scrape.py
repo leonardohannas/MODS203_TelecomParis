@@ -529,6 +529,9 @@ if __name__ == "__main__":
     if not os.path.exists(os.path.dirname(PATH) + "/data/logs"):
         os.mkdir(os.path.dirname(PATH) + "/data/logs")
 
+    if not os.path.exists(os.path.dirname(PATH) + "/data/csv_files"):
+        os.mkdir(os.path.dirname(PATH) + "/data/csv_files")
+
     current_time = datetime.now()
     formatted_time = current_time.strftime("%Y%m%d_%H%M%S")
 

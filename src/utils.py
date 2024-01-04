@@ -17,7 +17,7 @@ def rename_columns(filename):
         filename (str): name of the csv file
     """
 
-    df = pd.read_csv(os.path.dirname(PATH) + "\data\\" + filename)
+    df = pd.read_csv(os.path.dirname(PATH) + "\data\\csv_files" + filename)
 
     columns = {
         "price/unity": "price/unity [€/u]",
@@ -131,9 +131,9 @@ def save_product_info(data, filename):
     data = {key: value for key, value in data.items() if key in fieldnames}
 
     # Create the file if it doesn't exist
-    if not os.path.isfile(os.path.dirname(PATH) + "/data/" + filename):
+    if not os.path.isfile(os.path.dirname(PATH) + "/data/csv_files/" + filename):
         with open(
-            os.path.dirname(PATH) + "/data/" + filename,
+            os.path.dirname(PATH) + "/data/csv_files/" + filename,
             mode="w",
             newline="",
             encoding="utf-8",
@@ -142,7 +142,7 @@ def save_product_info(data, filename):
             writer.writeheader()
 
     with open(
-        os.path.dirname(PATH) + "/data/" + filename,
+        os.path.dirname(PATH) + "/data/csv_files/" + filename,
         mode="a",
         newline="",
         encoding="utf-8",
