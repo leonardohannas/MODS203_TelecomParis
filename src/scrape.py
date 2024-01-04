@@ -43,9 +43,17 @@ def get_supermarket_info(headers):
 
         # if the status code is 200, it means that the supermarket exists
         if response.status_code == 200:
+            # Create new folder for that supermarket
+            if not os.path.exists(
+                os.path.dirname(PATH) + f"/data/html_files/store_{i}"
+            ):
+                os.mkdir(os.path.dirname(PATH) + f"/data/html_files/store_{i}")
+
             # Saving the response in a html file.
-            file_name = f"store_{i}.html"
-            file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+            file_name = f"store_info_{i}.html"
+            file_path = (
+                os.path.dirname(PATH) + f"/data/html_files/store_{i}/" + file_name
+            )
             save_html_to_file(response_text, file_path)
 
             print(f"Getting info for supermarket {i}...")
@@ -85,8 +93,12 @@ def get_categories(magasin_id=120):
 
     print(f"Getting categories for supermarket {magasin_id}...")
 
-    file_name = f"categories_store_{cookies['magasin_id']}.html"
-    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    file_name = f"categories.html"
+    file_path = (
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/"
+        + file_name
+    )
 
     # If the html file does not exist, we get it from the web and save it
     if not os.path.isfile(file_path):
@@ -98,9 +110,8 @@ def get_categories(magasin_id=120):
 
         response_text = response_sub.text
         save_html_to_file(response_text, file_path)
-
     else:
-        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+        with open(file_path, "r") as file:
             response_text = file.read()
 
     soup_sub = bs(response_text, features="html.parser")
@@ -136,8 +147,22 @@ def get_subcategories(category):
 
     print("Title cat: ", title_cat)
 
-    file_name = f"cat_{title_cat}_store_{cookies['magasin_id']}.html"
-    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    # Create new folder for that category
+    if not os.path.exists(
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/"
+    ):
+        os.mkdir(
+            os.path.dirname(PATH)
+            + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/"
+        )
+
+    file_name = f"cat_{title_cat}.html"
+    file_path = (
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/"
+        + file_name
+    )
 
     # If the html file does not exist, we get it from the web and save it
     if not os.path.isfile(file_path):
@@ -150,9 +175,8 @@ def get_subcategories(category):
 
         response_text = response_sub.text
         save_html_to_file(response_text, file_path)
-
     else:
-        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+        with open(file_path, "r") as file:
             response_text = file.read()
 
     soup_sub = bs(response_text, features="html.parser")
@@ -164,12 +188,13 @@ def get_subcategories(category):
     return title_cat, subcategories
 
 
-def get_subsubcategories(subcat):
+def get_subsubcategories(title_cat, subcat):
     """
     Get all the subcategories of a specific subcategory
 
     Parameters:
     ----------
+        title_cat (str): title of the category
         subcat: subcategory
 
     Returns:
@@ -188,8 +213,22 @@ def get_subsubcategories(subcat):
 
     print("------Title sub: ", title_sub)
 
-    file_name = f"subcategory_{title_sub}_store_{cookies['magasin_id']}.html"
-    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    # Create new folder for that sub_category
+    if not os.path.exists(
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/"
+    ):
+        os.mkdir(
+            os.path.dirname(PATH)
+            + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/"
+        )
+
+    file_name = f"subcategory_{title_sub}.html"
+    file_path = (
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/"
+        + file_name
+    )
 
     # If the html file does not exist, we get it from the web and save it
     if not os.path.isfile(file_path):
@@ -202,9 +241,8 @@ def get_subsubcategories(subcat):
 
         response_text = response_sub_sub.text
         save_html_to_file(response_text, file_path)
-
     else:
-        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+        with open(file_path, "r") as file:
             response_text = file.read()
 
     soup_sub_sub = bs(response_text, features="html.parser")
@@ -216,7 +254,7 @@ def get_subsubcategories(subcat):
     return title_sub, sub_subcategories
 
 
-def get_product_info(id, headers, cookies):
+def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
     """
     Get all the info of a specific product
 
@@ -225,6 +263,9 @@ def get_product_info(id, headers, cookies):
         id (str): id of the product
         headers (dict): headers to use for the request
         cookies (dict): cookies to use for the request
+        title_cat (str): title of the category
+        title_sub (str): title of the subcategory
+        title_sub_sub (str): title of the subsubcategory
 
     Returns:
     -------
@@ -236,9 +277,23 @@ def get_product_info(id, headers, cookies):
 
     print(f"Getting product info for {id}...")
 
+    # Create new folder for that products
+    if not os.path.exists(
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/{title_sub_sub}/products/"
+    ):
+        os.mkdir(
+            os.path.dirname(PATH)
+            + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/{title_sub_sub}/products/"
+        )
+
     # Cheking if the file already exists.
-    file_name = f"product_{id}_store_{cookies['magasin_id']}.html"
-    file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+    file_name = f"product_{id}.html"
+    file_path = (
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/{title_sub_sub}/products/"
+        + file_name
+    )
 
     # If the html file does not exist, we get it from the web and save it
     if not os.path.isfile(file_path):
@@ -250,9 +305,8 @@ def get_product_info(id, headers, cookies):
 
         response_text = response.text
         save_html_to_file(response_text, file_path)
-
     else:
-        with open(os.path.dirname(PATH) + "/data/html_files/" + file_name, "r") as file:
+        with open(file_path, "r") as file:
             response_text = file.read()
 
     soup = bs(response_text, features="html.parser")
@@ -328,14 +382,28 @@ def get_products(sub_subcat, title_cat, title_sub):
 
     print("-------------Title sub sub: ", title_sub_sub)
 
+    # Create new folder for that sub_sub_category
+    if not os.path.exists(
+        os.path.dirname(PATH)
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_sub}/{title_sub}/{title_sub_sub}/"
+    ):
+        os.mkdir(
+            os.path.dirname(PATH)
+            + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/{title_sub_sub}/"
+        )
+
     # get all the products
     i = 0
     while True:
         i += 1
 
         # Cheking if the file already exists.
-        file_name = f"{title_cat}_{title_sub}_{title_sub_sub}_page_{i}_store_{cookies['magasin_id']}.html"
-        file_path = os.path.dirname(PATH) + "/data/html_files/" + file_name
+        file_name = f"subsubcategory_{title_sub_sub}_page_{i}.html"
+        file_path = (
+            os.path.dirname(PATH)
+            + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/{title_sub_sub}/"
+            + file_name
+        )
 
         # If the html file does not exist, we get it from the web and save it
         if not os.path.isfile(file_path):
@@ -357,9 +425,7 @@ def get_products(sub_subcat, title_cat, title_sub):
             response_text = response_prod.text
             save_html_to_file(response_text, file_path)
         else:
-            with open(
-                os.path.dirname(PATH) + "/data/html_files/" + file_name, "r"
-            ) as file:
+            with open(file_path, "r") as file:
                 response_text = file.read()
 
         soup_prod = bs(response_text, features="html.parser")
@@ -405,7 +471,11 @@ def get_products(sub_subcat, title_cat, title_sub):
             # get and save product info
             # If something goes bad, we caught the exception and print it.
             try:
-                data.update(get_product_info(id_prod, headers, cookies))
+                data.update(
+                    get_product_info(
+                        id_prod, headers, cookies, title_cat, title_sub, title_sub_sub
+                    )
+                )
                 save_product_info(
                     data, "store_" + cookies["magasin_id"] + "_products" + ".csv"
                 )
@@ -424,8 +494,8 @@ def main():
         print("Getting supermarkets info from the web...")
         store_list = get_supermarket_info(headers)
         save_supermarket_info(store_list, "supermarkets" + ".csv")
-        stores_info = pd.DataFrame(store_list)
-        print(stores_info.head())
+        # stores_info = pd.DataFrame(store_list)
+        # print(stores_info.head())
     else:
         # we get the info about the stores from the supermarkets.csv file
         print("Getting supermarkets info from the csv file...")
@@ -443,7 +513,7 @@ def main():
             title_cat, subcategories = get_subcategories(cat)
 
             for subcat in subcategories:
-                title_sub, sub_subcategories = get_subsubcategories(subcat)
+                title_sub, sub_subcategories = get_subsubcategories(title_cat, subcat)
 
                 for sub_subcat in sub_subcategories:
                     get_products(sub_subcat, title_cat, title_sub)
@@ -462,7 +532,9 @@ if __name__ == "__main__":
     current_time = datetime.now()
     formatted_time = current_time.strftime("%Y%m%d_%H%M%S")
 
-    with open("../data/logs/" + formatted_time + "_errors.txt", "w+") as file:
+    with open(
+        os.path.dirname(PATH) + "/data/logs/" + formatted_time + "_errors.txt", "w"
+    ) as file:
         # Redirect stdout to the file
         sys.stderr = file
         print("Init...\n", file=sys.stderr)
