@@ -28,7 +28,7 @@ def get_supermarket_info(headers):
         headers (dict): headers to use for the request
 
     Returns:
-    -------
+    ----------
         store_list (list of dict): list of all the supermarkets info
     """
 
@@ -84,7 +84,7 @@ def get_categories(magasin_id=120):
         magasin_id (int): id of the supermarket
 
     Returns:
-    -------
+    ----------
         categories (list): list of all the categories
     """
 
@@ -111,7 +111,7 @@ def get_categories(magasin_id=120):
         response_text = response_sub.text
         save_html_to_file(response_text, file_path)
     else:
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
 
     soup_sub = bs(response_text, features="html.parser")
@@ -120,7 +120,7 @@ def get_categories(magasin_id=120):
         "ul", class_="c-list children-categories__list"
     ).find_all("li", class_="c-list__item children-categories__list-item")
 
-    return categories[4:12]  # we take only category concerning food
+    return categories[12:12]  # we take only category concerning food
 
 
 def get_subcategories(category):
@@ -132,7 +132,7 @@ def get_subcategories(category):
         category: category
 
     Returns:
-    -------
+    ----------
         title_cat (str): title of the category
         subcategories (list): list of all the subcategories
     """
@@ -176,7 +176,7 @@ def get_subcategories(category):
         response_text = response_sub.text
         save_html_to_file(response_text, file_path)
     else:
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
 
     soup_sub = bs(response_text, features="html.parser")
@@ -198,7 +198,7 @@ def get_subsubcategories(title_cat, subcat):
         subcat: subcategory
 
     Returns:
-    -------
+    ----------
         title_sub (str): title of the subcategory
         sub_subcategories (list): list of all the subcategories
     """
@@ -242,7 +242,7 @@ def get_subsubcategories(title_cat, subcat):
         response_text = response_sub_sub.text
         save_html_to_file(response_text, file_path)
     else:
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
 
     soup_sub_sub = bs(response_text, features="html.parser")
@@ -268,7 +268,7 @@ def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
         title_sub_sub (str): title of the subsubcategory
 
     Returns:
-    -------
+    ----------
         res (dict): dict containing all the info of the product
     """
 
@@ -306,7 +306,7 @@ def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
         response_text = response.text
         save_html_to_file(response_text, file_path)
     else:
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
 
     soup = bs(response_text, features="html.parser")
@@ -425,7 +425,7 @@ def get_products(sub_subcat, title_cat, title_sub):
             response_text = response_prod.text
             save_html_to_file(response_text, file_path)
         else:
-            with open(file_path, "r") as file:
+            with open(file_path, "r", encoding="utf8") as file:
                 response_text = file.read()
 
         soup_prod = bs(response_text, features="html.parser")
@@ -505,21 +505,58 @@ def main():
     stores_id = stores_info["magasin_id"].tolist()
 
     # since the info about the store is in the cookie, we modify the cookies with the id of the store
-    for store_id in stores_id:
+    for store_id in stores_id[2:]:
         # first we get all the info of products of a specific supermarket
-        categories = get_categories(store_id)
+        try:
+            categories = get_categories(store_id)
+        except Exception as e:
+            print(
+                f"An error occurred while scraping the categories of the store {store_id}.\nError: {e}",
+                file=sys.stderr,
+            )
+            continue
 
         for cat in categories:
-            title_cat, subcategories = get_subcategories(cat)
+            try:
+                title_cat, subcategories = get_subcategories(cat)
+            except Exception as e:
+                print(
+                    f"An error occurred while scraping the subcategories of the store {store_id}.\nError: {e}",
+                    file=sys.stderr,
+                )
+                continue
 
             for subcat in subcategories:
-                title_sub, sub_subcategories = get_subsubcategories(title_cat, subcat)
+                try:
+                    title_sub, sub_subcategories = get_subsubcategories(
+                        title_cat, subcat
+                    )
+                except Exception as e:
+                    print(
+                        f"An error occurred while scraping the subsubcategories of the store {store_id}.\nError: {e}",
+                        file=sys.stderr,
+                    )
+                    continue
 
                 for sub_subcat in sub_subcategories:
-                    get_products(sub_subcat, title_cat, title_sub)
+                    try:
+                        get_products(sub_subcat, title_cat, title_sub)
+                    except Exception as e:
+                        print(
+                            f"An error occurred while scraping the products of the store {store_id}.\nError: {e}",
+                            file=sys.stderr,
+                        )
+                        continue
 
         # add unit of measure to csv header
-        rename_columns("store_" + cookies["magasin_id"] + "_products" + ".csv")
+        try:
+            rename_columns("store_" + cookies["magasin_id"] + "_products" + ".csv")
+        except Exception as e:
+            print(
+                f"An error occurred while renaming the columns of the store {store_id}.\nError: {e}",
+                file=sys.stderr,
+            )
+            continue
 
 
 if __name__ == "__main__":
@@ -536,7 +573,9 @@ if __name__ == "__main__":
     formatted_time = current_time.strftime("%Y%m%d_%H%M%S")
 
     with open(
-        os.path.dirname(PATH) + "/data/logs/" + formatted_time + "_errors.txt", "w"
+        os.path.dirname(PATH) + "/data/logs/" + formatted_time + "_errors.txt",
+        "w",
+        encoding="utf8",
     ) as file:
         # Redirect stdout to the file
         sys.stderr = file

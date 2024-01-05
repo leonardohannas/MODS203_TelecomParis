@@ -49,7 +49,7 @@ def clean_value(text):
         text (str): string to clean
 
     Returns:
-    -------
+    ----------
         float_value (float): float value of the string
     """
 
