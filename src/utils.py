@@ -17,7 +17,7 @@ def rename_columns(filename):
         filename (str): name of the csv file
     """
 
-    df = pd.read_csv(os.path.dirname(PATH) + "\data\\csv_files" + filename)
+    df = pd.read_csv(os.path.dirname(PATH) + "\data\\csv_files\\" + filename)
 
     columns = {
         "price/unity": "price/unity [€/u]",

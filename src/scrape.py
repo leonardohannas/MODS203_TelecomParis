@@ -120,7 +120,7 @@ def get_categories(magasin_id=120):
         "ul", class_="c-list children-categories__list"
     ).find_all("li", class_="c-list__item children-categories__list-item")
 
-    return categories[12:12]  # we take only category concerning food
+    return categories[4:12]  # we take only category concerning food
 
 
 def get_subcategories(category):
@@ -505,7 +505,7 @@ def main():
     stores_id = stores_info["magasin_id"].tolist()
 
     # since the info about the store is in the cookie, we modify the cookies with the id of the store
-    for store_id in stores_id[2:]:
+    for store_id in stores_id:
         # first we get all the info of products of a specific supermarket
         try:
             categories = get_categories(store_id)
