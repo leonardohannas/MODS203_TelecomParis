@@ -1,6 +1,8 @@
 import os
+import random
 import sys
 from datetime import datetime
+import time
 
 import pandas as pd
 import requests
@@ -305,6 +307,10 @@ def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
 
         response_text = response.text
         save_html_to_file(response_text, file_path)
+        
+        # Random sleep between requests
+        time.sleep(random.uniform(1, 20))
+        
     else:
         with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
