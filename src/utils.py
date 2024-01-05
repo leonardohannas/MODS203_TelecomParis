@@ -37,7 +37,7 @@ def rename_columns(filename):
 
     df = df.rename(columns=columns)
 
-    df.to_csv(os.path.dirname(PATH) + "/data/" + filename, index=False)
+    df.to_csv(os.path.dirname(PATH) + "/data/csv_files/" + filename, index=False)
 
 
 def clean_value(text):
