@@ -11,6 +11,7 @@ from utils import (
     PATH,
     clean_value,
     get_cookies_headers,
+    is_valid_html,
     rename_columns,
     save_html_to_file,
     save_product_info,
@@ -56,7 +57,15 @@ def get_supermarket_info(headers):
             file_path = (
                 os.path.dirname(PATH) + f"/data/html_files/store_{i}/" + file_name
             )
-            save_html_to_file(response_text, file_path)
+
+            # if is_valid_html(response_text):
+            #     save_html_to_file(response_text, file_path)
+            # else:
+            #     print(
+            #         f"Error while retrieving valid html file for supermarket {i} page.",
+            #         file=sys.stderr,
+            #     )
+            #     continue
 
             print(f"Getting info for supermarket {i}...")
 
@@ -111,7 +120,13 @@ def get_categories(magasin_id=120):
         )
 
         response_text = response_sub.text
-        save_html_to_file(response_text, file_path)
+        # if is_valid_html(response_text):
+        #     save_html_to_file(response_text, file_path)
+        # else:
+        #     print(
+        #         f"Error while retrieving valid html file for categories page of the store {cookies['magasin_id']}.",
+        #         file=sys.stderr,
+        #     )
     else:
         with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
@@ -176,7 +191,13 @@ def get_subcategories(category):
         )
 
         response_text = response_sub.text
-        save_html_to_file(response_text, file_path)
+        # if is_valid_html(response_text):
+        #     save_html_to_file(response_text, file_path)
+        # else:
+        #     print(
+        #         f"Error while retrieving valid html file for subcategories page of the cateogory {category} of the store {cookies['magasin_id']}.",
+        #         file=sys.stderr,
+        #     )
     else:
         with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
@@ -242,7 +263,14 @@ def get_subsubcategories(title_cat, subcat):
         )
 
         response_text = response_sub_sub.text
-        save_html_to_file(response_text, file_path)
+
+        # if is_valid_html(response_text):
+        #     save_html_to_file(response_text, file_path)
+        # else:
+        #     print(
+        #         f"Error while retrieving valid html file for subsubcategories page of the subcategory {subcat} of the category {title_cat} of the store {cookies['magasin_id']}.",
+        #         file=sys.stderr,
+        #     )
     else:
         with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
@@ -306,8 +334,16 @@ def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
         )
 
         response_text = response.text
-        save_html_to_file(response_text, file_path)
-        
+
+        # if is_valid_html(response_text):
+        #     save_html_to_file(response_text, file_path)
+        # else:
+        #     print(
+        #         f"Error while retrieving valid html file for product {id} of the subsubcategory {title_cat}/{title_sub}/{title_sub_sub} of the store {cookies['magasin_id']}.",
+        #         file=sys.stderr,
+        #     )
+        #     return None
+
         # Random sleep between requests
         time.sleep(random.uniform(1, 20))
         
@@ -429,7 +465,15 @@ def get_products(sub_subcat, title_cat, title_sub):
                 break
 
             response_text = response_prod.text
-            save_html_to_file(response_text, file_path)
+
+            # if is_valid_html(response_text):
+            #     save_html_to_file(response_text, file_path)
+            # else:
+            #     print(
+            #         f"Error while retrieving valid html file for subsubcategory {title_sub_sub} page of the store {cookies['magasin_id']}.",
+            #         file=sys.stderr,
+            #     )
+            #     break
         else:
             with open(file_path, "r", encoding="utf8") as file:
                 response_text = file.read()

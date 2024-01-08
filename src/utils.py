@@ -2,6 +2,7 @@ import csv
 import json
 import os
 import re
+from bs4 import BeautifulSoup as bs
 
 import pandas as pd
 
@@ -168,3 +169,23 @@ def save_html_to_file(html_content, file_path):
     file.write(html_content)
 
     file.close()
+
+
+def is_valid_html(html_content):
+    """
+    Check if the html content is valid, i.e., it represents 
+    the real content of the website.
+
+    Parameters:
+    ----------
+        html_content (str): The HTML content to be checked.
+
+    Returns:
+    ----------
+        bool: True if the html content is valid, False otherwise.
+    """
+
+    soup = bs(html_content, features="html.parser")
+    meta_robots = soup.find("head").find("meta", attrs={"name": "ROBOTS"})
+
+    return meta_robots is None
