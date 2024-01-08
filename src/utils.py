@@ -189,3 +189,38 @@ def is_valid_html(html_content):
     meta_robots = soup.find("head").find("meta", attrs={"name": "ROBOTS"})
 
     return meta_robots is None
+
+
+def get_last_scraping_point(store_id):
+    """
+    Get where the last scraping stopped
+
+    Returns:
+    ----------
+        last_point (dict): last scraping point
+        keys: title_cat, title_sub, title_sub_sub, product_id
+    """
+
+    df = pd.read_csv(
+        os.path.dirname(PATH) + f"/data/csv_files/store_{store_id}_products.csv",
+    )
+
+    last_point = {
+        'title_cat': df["category"].iloc[-1],
+        'title_sub': df["subcategory"].iloc[-1],
+        'title_sub_sub': df["sub_sub_category"].iloc[-1],
+        'product_id': df["product_id"].iloc[-1],
+    }
+
+    return last_point
+
+def store_products_csv_exists(store_id):
+    """
+    Check if the csv file exists
+
+    Returns:
+    ----------
+        bool: True if the csv file exists, False otherwise
+    """
+
+    return os.path.isfile(os.path.dirname(PATH) + f"/data/csv_files/store_{store_id}_products.csv")

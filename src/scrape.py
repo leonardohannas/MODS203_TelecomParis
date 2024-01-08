@@ -11,14 +11,17 @@ from utils import (
     PATH,
     clean_value,
     get_cookies_headers,
+    get_last_scraping_point,
     is_valid_html,
     rename_columns,
     save_html_to_file,
     save_product_info,
     save_supermarket_info,
+    store_products_csv_exists,
 )
 
 MAIN_URL = "https://www.cora.fr"
+SEARCHING_LAST_SCRAPING_POINT = False
 cookies, headers = get_cookies_headers()
 
 
@@ -403,7 +406,7 @@ def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
     return res
 
 
-def get_products(sub_subcat, title_cat, title_sub):
+def get_products(sub_subcat, title_cat, title_sub, last_scraping_point):
     """
     Get all the products of a specific subsubcategory
 
@@ -413,6 +416,8 @@ def get_products(sub_subcat, title_cat, title_sub):
         title_cat (str): title of the category
         title_sub (str): title of the subcategory
     """
+
+    global SEARCHING_LAST_SCRAPING_POINT
 
     link_rel_sub_sub = sub_subcat.find(
         "a",
@@ -462,6 +467,7 @@ def get_products(sub_subcat, title_cat, title_sub):
 
             # if there is a redirect, break. This means that there are no more products in this subcategory
             if response_prod.history:
+                SEARCHING_LAST_SCRAPING_POINT = False
                 break
 
             response_text = response_prod.text
@@ -488,7 +494,42 @@ def get_products(sub_subcat, title_cat, title_sub):
             class_="c-list__item c-product-list-container-products__item Desk_DP_Tuile c-product-list-container-products__item--grid",
         )
 
-        for prod in prods:
+        start_product = 0
+        if title_sub_sub == last_scraping_point['title_sub_sub'] and SEARCHING_LAST_SCRAPING_POINT:
+            try:
+                last_product_id = last_scraping_point['product_id']
+                prods_id = []
+                for prod in prods:
+                    disabled = prod.find(
+                        "div",
+                        class_="c-product-list-item__disabled c-product-list-item--grid__disabled",
+                    )
+
+                    # if the product is disabled, we do not get the info and we continue
+                    if disabled:
+                        # we append -1 to the list in order to match the indexes of the products for the next loop
+                        prods_id.append(int(-1))
+                        continue
+
+                    id_prod = (
+                        prod.find(
+                            "a",
+                            class_="c-link-to c-product-list-item--grid__title c-link-to--hover-primary-light",
+                        )
+                        .get("href")
+                        .split("/")[2]
+                    )
+                    prods_id.append(int(id_prod))
+                if not last_product_id in prods_id:
+                    continue
+                print(f"Last scraping product id: {last_product_id}")
+                SEARCHING_LAST_SCRAPING_POINT = False
+                start_product = prods_id.index(last_product_id) + 1
+            except Exception as e:
+                print(f"Error while finding the last scraping product index.\nError: {e}")
+                print(f"Starting from the first product...")
+            
+        for prod in prods[start_product:]:
             disabled = prod.find(
                 "div",
                 class_="c-product-list-item__disabled c-product-list-item--grid__disabled",
@@ -565,8 +606,34 @@ def main():
                 file=sys.stderr,
             )
             continue
+        
+        # we check if the store has already started to be scraped
+        # if it is the case, we find the last scraping point
+        last_scraping_point = None
+        start_cat = 0
+        start_subcat = 0
+        start_subsubcat = 0
+        global SEARCHING_LAST_SCRAPING_POINT
+        SEARCHING_LAST_SCRAPING_POINT = store_products_csv_exists(store_id)
+        if SEARCHING_LAST_SCRAPING_POINT:
+            print(f"Store {store_id} already started to be scraped. Finding the last point...")
+            last_scraping_point = get_last_scraping_point(store_id)
+            last_scraping_cat = last_scraping_point['title_cat']
+            last_scraping_subcat = last_scraping_point['title_sub']
+            last_scraping_subsubcat = last_scraping_point['title_sub_sub']
 
-        for cat in categories:
+            cat_titles = []
+            for cat in categories:
+                cat_titles.append(cat.find("div", class_="c-title-image__label").text.strip())
+            try:
+                print(f"Last scraping category: {last_scraping_cat}")
+                start_cat = cat_titles.index(last_scraping_cat)
+            except:
+                print(f"Error while finding the last scraping cat index.\nError: {e}")
+                print(f"Starting from the first category...")
+                SEARCHING_LAST_SCRAPING_POINT = False
+
+        for cat in categories[start_cat:]:
             try:
                 title_cat, subcategories = get_subcategories(cat)
             except Exception as e:
@@ -575,8 +642,22 @@ def main():
                     file=sys.stderr,
                 )
                 continue
+            
+            # searching the last scraping point
+            start_subcat = 0
+            if title_cat == last_scraping_cat and SEARCHING_LAST_SCRAPING_POINT:
+                subcat_titles = []
+                for subcat in subcategories:
+                    subcat_titles.append(subcat.find("div", class_="c-title-image__label").text.strip())
+                try:
+                    print(f"Last scraping subcategory: {last_scraping_subcat}")
+                    start_subcat = subcat_titles.index(last_scraping_subcat)
+                except:
+                    print(f"Error while finding the last scraping subcat index.")
+                    print(f"Starting from the first subcategory...")
+                    SEARCHING_LAST_SCRAPING_POINT = False
 
-            for subcat in subcategories:
+            for subcat in subcategories[start_subcat:]:
                 try:
                     title_sub, sub_subcategories = get_subsubcategories(
                         title_cat, subcat
@@ -587,10 +668,24 @@ def main():
                         file=sys.stderr,
                     )
                     continue
-
-                for sub_subcat in sub_subcategories:
+                
+                # searching the last scraping point
+                start_subsubcat = 0
+                if title_sub == last_scraping_subcat and SEARCHING_LAST_SCRAPING_POINT:
+                    sub_subcat_titles = []
+                    for sub_subcat in sub_subcategories:
+                        sub_subcat_titles.append(sub_subcat.find("div", class_="c-title-image__label").text.strip())
                     try:
-                        get_products(sub_subcat, title_cat, title_sub)
+                        print(f"Last scraping subsubcategory: {last_scraping_subsubcat}")
+                        start_subsubcat = sub_subcat_titles.index(last_scraping_subsubcat)
+                    except:
+                        print(f"Error while finding the last scraping subsubcat index.")
+                        print(f"Starting from the first subsubcategory...")
+                        SEARCHING_LAST_SCRAPING_POINT = False
+                    
+                for sub_subcat in sub_subcategories[start_subsubcat:]:
+                    try:
+                        get_products(sub_subcat, title_cat, title_sub, last_scraping_point)
                     except Exception as e:
                         print(
                             f"An error occurred while scraping the products of the store {store_id}.\nError: {e}",
