@@ -111,7 +111,7 @@ def save_product_info(data, filename):
         "subcategory",
         "sub_sub_category",
         "product name",
-        "price/um",
+        "price/unity",
         "price",
         "nutri-score",
         "Valeur énergétique en kJ",
