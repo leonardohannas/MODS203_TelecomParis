@@ -1,4 +1,4 @@
-magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/um,price [€],nutri-score,Valeur énergétique [kJ],Valeur énergétique [kCal],Matières grasses [g],Dont acides gras saturés [g],Dont acides gras mono-insaturés [g],Glucides [g],Dont sucres [g],Protéines [g],Fibres alimentaires [g],Sel [g],Sodium [mg]
+magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/unity [€/u],price [€],nutri-score,Valeur énergétique [kJ],Valeur énergétique [kCal],Matières grasses [g],Dont acides gras saturés [g],Dont acides gras mono-insaturés [g],Glucides [g],Dont sucres [g],Protéines [g],Fibres alimentaires [g],Sel [g],Sodium [mg]
 73,1125496,Fruits et légumes,Fruits et légumes bio,Fruits bio,Citron bio Primofiori,3.99,0.4,,,,,,,,,,,,
 73,2320362,Fruits et légumes,Fruits et légumes bio,Fruits bio,Patate douce bio le kilo,1.99,1.0,,,,,,,,,,,,
 73,1125691,Fruits et légumes,Fruits et légumes bio,Fruits bio,Pomme golden aop bio le kilo,3.99,0.6,,,,,,,,,,,,
