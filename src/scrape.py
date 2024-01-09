@@ -495,7 +495,7 @@ def get_products(sub_subcat, title_cat, title_sub, last_scraping_point):
         )
 
         start_product = 0
-        if title_sub_sub == last_scraping_point['title_sub_sub'] and SEARCHING_LAST_SCRAPING_POINT:
+        if SEARCHING_LAST_SCRAPING_POINT and title_sub_sub == last_scraping_point['title_sub_sub']:
             try:
                 last_product_id = last_scraping_point['product_id']
                 prods_id = []
@@ -645,7 +645,7 @@ def main():
             
             # searching the last scraping point
             start_subcat = 0
-            if title_cat == last_scraping_cat and SEARCHING_LAST_SCRAPING_POINT:
+            if SEARCHING_LAST_SCRAPING_POINT and title_cat == last_scraping_cat:
                 subcat_titles = []
                 for subcat in subcategories:
                     subcat_titles.append(subcat.find("div", class_="c-title-image__label").text.strip())
@@ -671,7 +671,7 @@ def main():
                 
                 # searching the last scraping point
                 start_subsubcat = 0
-                if title_sub == last_scraping_subcat and SEARCHING_LAST_SCRAPING_POINT:
+                if SEARCHING_LAST_SCRAPING_POINT and title_sub == last_scraping_subcat:
                     sub_subcat_titles = []
                     for sub_subcat in sub_subcategories:
                         sub_subcat_titles.append(sub_subcat.find("div", class_="c-title-image__label").text.strip())
