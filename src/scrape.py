@@ -1,8 +1,8 @@
 import os
 import random
 import sys
-from datetime import datetime
 import time
+from datetime import datetime
 
 import pandas as pd
 import requests
@@ -348,8 +348,7 @@ def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
         #     return None
 
         # Random sleep between requests
-        time.sleep(random.uniform(1, 20))
-        
+        time.sleep(random.randint(100, 1000) / 1000)
     else:
         with open(file_path, "r", encoding="utf8") as file:
             response_text = file.read()
@@ -384,7 +383,7 @@ def get_product_info(id, headers, cookies, title_cat, title_sub, title_sub_sub):
         nutri_score = None
 
     res = {
-        "price/um": price_unity,
+        "price/unity": price_unity,
         "price": price,
         "product name": prod_name,
         "nutri-score": nutri_score,
@@ -575,6 +574,7 @@ def get_products(sub_subcat, title_cat, title_sub, last_scraping_point):
                     f"An error occurred while scraping the product {id_prod} of the store {cookies['magasin_id']}. Cat: {title_cat}, subCat: {title_sub}, subSubCat: {title_sub_sub}.\nError: {e}",
                     file=sys.stderr,
                 )
+                print("Skipping product...")
 
 
 def main():
