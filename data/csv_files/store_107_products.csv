@@ -1,4 +1,4 @@
-magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/um,price,nutri-score,Valeur énergétique en kJ,Valeur énergétique en kCal,Matières grasses,Dont acides gras saturés,Dont acides gras mono-insaturés,Glucides,Dont sucres,Protéines,Fibres alimentaires,Sel,Sodium
+magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/unity [€/u],price [€],nutri-score,Valeur énergétique [kJ],Valeur énergétique [kCal],Matières grasses [g],Dont acides gras saturés [g],Dont acides gras mono-insaturés [g],Glucides [g],Dont sucres [g],Protéines [g],Fibres alimentaires [g],Sel [g],Sodium [mg]
 107,2338746,Fruits et légumes,Fruits et légumes bio,Fruits bio,Banane bio 5 fruits,3.05,2.29,,,,,,,,,,,,
 107,982534,Fruits et légumes,Fruits et légumes bio,Fruits bio,Pomme bio barquette 4 fruits,7.18,3.59,,,,,,,,,,,,
 107,960493,Fruits et légumes,Fruits et légumes bio,Fruits bio,Pomme granny bio barquette 4 fruits,8.73,3.49,,,,,,,,,,,,
