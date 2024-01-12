@@ -432,7 +432,7 @@ def get_products(sub_subcat, title_cat, title_sub, last_scraping_point):
     # Create new folder for that sub_sub_category
     if not os.path.exists(
         os.path.dirname(PATH)
-        + f"/data/html_files/store_{cookies['magasin_id']}/{title_sub}/{title_sub}/{title_sub_sub}/"
+        + f"/data/html_files/store_{cookies['magasin_id']}/{title_cat}/{title_sub}/{title_sub_sub}/"
     ):
         os.mkdir(
             os.path.dirname(PATH)
