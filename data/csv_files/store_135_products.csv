@@ -1,4 +1,4 @@
-magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/um,price,nutri-score,Valeur énergétique en kJ,Valeur énergétique en kCal,Matières grasses,Dont acides gras saturés,Dont acides gras mono-insaturés,Glucides,Dont sucres,Protéines,Fibres alimentaires,Sel,Sodium
+magasin_id,product_id,category,subcategory,sub_sub_category,product name,price/unity [€/u],price [€],nutri-score,Valeur énergétique [kJ],Valeur énergétique [kCal],Matières grasses [g],Dont acides gras saturés [g],Dont acides gras mono-insaturés [g],Glucides [g],Dont sucres [g],Protéines [g],Fibres alimentaires [g],Sel [g],Sodium [mg]
 135,2338746,Fruits et légumes,Fruits et légumes bio,Fruits bio,Banane bio 5 fruits,3.32,2.49,,,,,,,,,,,,
 135,982534,Fruits et légumes,Fruits et légumes bio,Fruits bio,Pomme bio barquette 4 fruits,5.98,2.99,,,,,,,,,,,,
 135,960490,Fruits et légumes,Fruits et légumes bio,Fruits bio,Pomme bio golden barquette 4 fruits,2.99,2.99,,,,,,,,,,,,
