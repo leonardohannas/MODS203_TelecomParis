@@ -60,7 +60,8 @@ def main():
 
         df_res = pd.concat([df_res, df_filtered])
 
-    df_res.to_csv(PATH + "/data/cleaned_dataset.csv")
+    df_res = df_res.sort_values(by=["magasin_id"])
+    df_res.to_csv(PATH + "/data/complete.csv", index=False)
 
 
 if __name__ == "__main__":
