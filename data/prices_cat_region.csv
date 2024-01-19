@@ -1,0 +1,81 @@
+,region_name,category,mean price [€],min price [€],max price [€]
+0,Auvergne-Rhône-Alpes,Epicerie salée,2.874666118421053,0.39,36.58
+1,Auvergne-Rhône-Alpes,Epicerie sucrée,3.7431323529411764,0.68,50.0
+2,Auvergne-Rhône-Alpes,Fruits et légumes,3.023533834586466,0.08,18.99
+3,Auvergne-Rhône-Alpes,"Pains, viennoiseries et pâtisseries",3.9928385698808233,0.42,50.0
+4,Auvergne-Rhône-Alpes,"Produits laitiers, oeufs, fromages et desserts",3.589351289833081,0.26,99.99
+5,Auvergne-Rhône-Alpes,Surgelés,5.141821756225426,0.99,29.9
+6,Auvergne-Rhône-Alpes,Traiteur,4.542975746268657,0.23,42.9
+7,Auvergne-Rhône-Alpes,"Viandes, charcuterie et poissons",6.817940354147251,0.6,125.95
+8,Bourgogne-Franche-Comté,Epicerie salée,2.9421240241567244,0.4,39.95
+9,Bourgogne-Franche-Comté,Epicerie sucrée,3.580494325831891,0.66,29.99
+10,Bourgogne-Franche-Comté,Fruits et légumes,3.0313998170173835,0.2,16.99
+11,Bourgogne-Franche-Comté,"Pains, viennoiseries et pâtisseries",4.5022803114571746,0.4,25.0
+12,Bourgogne-Franche-Comté,"Produits laitiers, oeufs, fromages et desserts",3.43500885403491,0.5,118.64
+13,Bourgogne-Franche-Comté,Surgelés,5.472222222222222,0.99,39.9
+14,Bourgogne-Franche-Comté,Traiteur,4.41927027027027,0.2,109.9
+15,Bourgogne-Franche-Comté,"Viandes, charcuterie et poissons",6.337139423076923,0.64,99.9
+16,Bretagne,Epicerie salée,3.2967762557077624,0.39,49.9
+17,Bretagne,Epicerie sucrée,3.9325693160813313,0.63,31.99
+18,Bretagne,Fruits et légumes,3.214191419141914,0.34,19.99
+19,Bretagne,"Pains, viennoiseries et pâtisseries",3.455096618357488,0.5,20.5
+20,Bretagne,"Produits laitiers, oeufs, fromages et desserts",3.356360071301248,0.51,89.99
+21,Bretagne,Surgelés,5.6563403263403265,0.99,38.9
+22,Bretagne,Traiteur,4.330467128027682,0.19,109.9
+23,Bretagne,"Viandes, charcuterie et poissons",7.411795705920625,0.38,63.43
+24,Centre-Val de Loire,Epicerie salée,2.831725258493353,0.39,36.57
+25,Centre-Val de Loire,Epicerie sucrée,3.249306506849315,0.64,21.44
+26,Centre-Val de Loire,Fruits et légumes,2.991177325581395,0.17,10.99
+27,Centre-Val de Loire,"Pains, viennoiseries et pâtisseries",3.9007202216066483,0.4,21.99
+28,Centre-Val de Loire,"Produits laitiers, oeufs, fromages et desserts",3.5205180467091295,0.51,119.8
+29,Centre-Val de Loire,Surgelés,4.958820143884893,0.99,32.34
+30,Centre-Val de Loire,Traiteur,4.148388489208633,0.23,36.92
+31,Centre-Val de Loire,"Viandes, charcuterie et poissons",6.026496710526316,0.6,61.46
+32,Grand Est,Epicerie salée,3.0359138325841744,0.4,57.0
+33,Grand Est,Epicerie sucrée,3.857920013386881,0.58,45.96
+34,Grand Est,Fruits et légumes,3.2064943457189012,0.21,19.99
+35,Grand Est,"Pains, viennoiseries et pâtisseries",4.0178125,0.5,24.99
+36,Grand Est,"Produits laitiers, oeufs, fromages et desserts",3.5496065647482014,0.49,99.99
+37,Grand Est,Surgelés,5.584800868935553,0.99,42.57
+38,Grand Est,Traiteur,4.340966458214895,0.2,67.39
+39,Grand Est,"Viandes, charcuterie et poissons",6.346729559748428,0.27,68.21
+40,Hauts-de-France,Epicerie salée,2.8804077573346594,0.4,57.0
+41,Hauts-de-France,Epicerie sucrée,3.6675493594574227,0.66,29.9
+42,Hauts-de-France,Fruits et légumes,3.1032111512648424,0.14,17.99
+43,Hauts-de-France,"Pains, viennoiseries et pâtisseries",4.212218934911243,0.44,34.95
+44,Hauts-de-France,"Produits laitiers, oeufs, fromages et desserts",3.6958558823529413,0.51,1245.6
+45,Hauts-de-France,Surgelés,5.1764748549323025,0.99,43.24
+46,Hauts-de-France,Traiteur,4.462766059443911,0.23,109.9
+47,Hauts-de-France,"Viandes, charcuterie et poissons",8.081081661891117,0.08,6003.5
+48,Normandie,Epicerie salée,2.752612293144208,0.4,37.15
+49,Normandie,Epicerie sucrée,3.4934994337485845,0.65,24.2
+50,Normandie,Fruits et légumes,3.0927106227106225,0.25,15.99
+51,Normandie,"Pains, viennoiseries et pâtisseries",3.6187272727272726,0.5,21.99
+52,Normandie,"Produits laitiers, oeufs, fromages et desserts",3.49069330199765,0.51,89.99
+53,Normandie,Surgelés,5.196415662650603,0.99,24.99
+54,Normandie,Traiteur,4.457215320910973,0.23,42.9
+55,Normandie,"Viandes, charcuterie et poissons",6.385110246433204,0.4,57.49
+56,Nouvelle-Aquitaine,Epicerie salée,2.823527397260274,0.39,36.39
+57,Nouvelle-Aquitaine,Epicerie sucrée,3.4199608122550766,0.64,29.99
+58,Nouvelle-Aquitaine,Fruits et légumes,3.3711623616236164,0.28,15.99
+59,Nouvelle-Aquitaine,"Pains, viennoiseries et pâtisseries",4.1795,0.39,24.99
+60,Nouvelle-Aquitaine,"Produits laitiers, oeufs, fromages et desserts",3.5131350330500473,0.51,99.99
+61,Nouvelle-Aquitaine,Surgelés,5.197939233817702,0.99,38.9
+62,Nouvelle-Aquitaine,Traiteur,4.130844645550528,0.19,42.99
+63,Nouvelle-Aquitaine,"Viandes, charcuterie et poissons",6.225069699192957,0.6,68.99
+64,Occitanie,Epicerie salée,2.8544168660287084,0.39,39.95
+65,Occitanie,Epicerie sucrée,3.6120622119815664,0.65,21.69
+66,Occitanie,Fruits et légumes,3.3421064814814816,0.17,17.99
+67,Occitanie,"Pains, viennoiseries et pâtisseries",3.8204255319148936,0.49,29.0
+68,Occitanie,"Produits laitiers, oeufs, fromages et desserts",3.4136324786324783,0.63,89.99
+69,Occitanie,Surgelés,5.627552986512524,1.2,25.9
+70,Occitanie,Traiteur,4.473293269230769,0.19,26.99
+71,Occitanie,"Viandes, charcuterie et poissons",7.232941176470589,0.19,82.61
+72,Île-de-France,Epicerie salée,2.971018133251143,0.4,57.0
+73,Île-de-France,Epicerie sucrée,3.6932350833184016,0.66,35.99
+74,Île-de-France,Fruits et légumes,3.1130105401844532,0.01,19.99
+75,Île-de-France,"Pains, viennoiseries et pâtisseries",3.9838950276243095,0.49,42.0
+76,Île-de-France,"Produits laitiers, oeufs, fromages et desserts",3.6383403273185055,0.36,1437.6
+77,Île-de-France,Surgelés,5.493724242424243,0.99,34.99
+78,Île-de-France,Traiteur,4.571646689497717,0.2,109.9
+79,Île-de-France,"Viandes, charcuterie et poissons",6.951031344792719,0.19,159.98
