@@ -162,3 +162,9 @@ cython_debug/
 logs/
 html_files/
 dossier_complet/
+
+# Aldo
+#  Ignore the following files and folders
+data/filtered_magasin_product.csv
+data/mean_n_summary.csv
+data/min_zeros_summary.csv
