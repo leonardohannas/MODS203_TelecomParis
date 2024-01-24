@@ -63,6 +63,7 @@ def nutri_histogram():
         color=palette,
         edgecolor="white",
         linewidth=0.5,
+        zorder=3,
     )
     plt.xlabel("Mean Nutri-Score")
     plt.ylabel("Category")
@@ -71,7 +72,7 @@ def nutri_histogram():
     )
     plt.legend(title="Region", bbox_to_anchor=(1.05, 1), loc="upper left")
     plt.tight_layout()
-    plt.grid(axis="x")
+    plt.grid(axis="x", zorder=0)
     plt.show()
 
 
