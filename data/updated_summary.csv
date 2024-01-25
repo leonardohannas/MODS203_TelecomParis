@@ -1,4 +1,4 @@
-region_name,category,subcategory,sub_sub_category,mean price [€],min price [€],max price [€],A,B,C,D,E,nutri-score null percentage
+region_name,category,subcategory,subsubcategory,mean price [€],min price [€],max price [€],A,B,C,D,E,nutri-score null percentage
 Auvergne-Rhône-Alpes,Epicerie salée,Conserves et plats cuisinés,Conserves de légumes,2.38,0.81,6.29,97.89999999999999,2.1,0.0,0.0,0.0,27.0
 Auvergne-Rhône-Alpes,Epicerie salée,Conserves et plats cuisinés,Conserves de poisson,2.71,0.89,6.73,10.2,43.7,35.4,8.3,2.4,48.0
 Auvergne-Rhône-Alpes,Epicerie salée,Conserves et plats cuisinés,Plats cuisinés en conserve et bocaux,3.23,0.49,6.85,32.4,61.199999999999996,6.4,0.0,0.0,49.0
