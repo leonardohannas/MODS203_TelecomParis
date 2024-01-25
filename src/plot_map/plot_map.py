@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 
 from data_map import regions_france, coords_scraped_stores, coords_all_stores
 
-def plot_map(csv_file_path=None, str="not specified value", range_color = None, points = None):
+def plot_map(csv_file_path=None, str="not specified value", title="Default", range_color = None, points = None):
 
     if csv_file_path is None:
         # Dummy data for the regions of France
@@ -33,12 +33,12 @@ def plot_map(csv_file_path=None, str="not specified value", range_color = None, 
                         df, 
                         geojson="https://france-geojson.gregoiredavid.fr/repo/regions.geojson", 
                         featureidkey="properties.nom",
-                        locations='region_name', 
+                        locations='region_name',
                         color=str,
                         range_color = range_color,
                         color_continuous_scale= "gray_r",
                         scope="europe",
-                        labels={'Value':str},
+                        labels={'Value':str},              
                         )
 
     # Adjust the map to focus on France
@@ -60,6 +60,21 @@ def plot_map(csv_file_path=None, str="not specified value", range_color = None, 
                 ),
             )
         ]
+    )
+
+    fig.add_trace(
+        go.Scattergeo(
+        lon = df['lon'],
+        lat = df['lat'],
+        text = df[str],
+        mode = 'text',
+        textfont=dict(
+            color="white",
+            size=15,
+            family="Arial, bold"
+        ),
+        name="",    
+        )
     )
 
     if points is not None:
@@ -101,12 +116,9 @@ def plot_map(csv_file_path=None, str="not specified value", range_color = None, 
             )
         )
 
-    # add a title
-    fig.update_layout(title_text = str + ' by region in France')
-
     # Add a legend
     fig.update_layout(
-        showlegend=True,
+        showlegend=False,
         legend=dict(
             x=0.5,
             y=0.08,
@@ -119,18 +131,28 @@ def plot_map(csv_file_path=None, str="not specified value", range_color = None, 
             xanchor='center',
             yanchor='bottom'
         )
-
     )
 
     # Add a title
-    fig.update_layout(title_text="Location of CORA stores in France")
-
-
+    fig.update_layout(title_text=title)
 
     # Show the figure
     fig.show()
 
+def salary():
+    # df = pd.read_csv("data/salary.csv")
+    # df = df.groupby("REGION")["SALARY/HOUR"].median().reset_index()
+    # df.columns = ["region_name", "median_salary"]
+    # df.to_csv("data/median_salary.csv", index=False)
+
+    plot_map(csv_file_path="data/updated_median_salary.csv", str="median_salary", range_color=None, title="Median salary/hour [€] per region in France")
+
+
+
 if __name__ == "__main__":
     
-    filepath = "data/min_zeros_summary.csv"
-    plot_map(csv_file_path=filepath, str="zeros", range_color=[0, 1000], points = coords_all_stores)
+    # filepath = "data/min_zeros_summary.csv"
+    # plot_map(csv_file_path=filepath, str="zeros", range_color=[0, 1000], points = coords_all_stores)
+
+    salary()
+
