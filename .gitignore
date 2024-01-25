@@ -167,3 +167,5 @@ dossier_complet/
 #  Ignore the following files and folders
 data/mean_n_summary.csv
 data/min_zeros_summary.csv
+data/median_salary.csv
+data/updated_median_salary.csv

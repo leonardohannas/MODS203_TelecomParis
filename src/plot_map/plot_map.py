@@ -5,13 +5,21 @@ import plotly.graph_objs as go
 from data_map import coords_all_stores, coords_scraped_stores, regions_france
 
 
-def plot_map(
-    csv_file_path=None,
-    str="not specified value",
-    title="Default",
-    range_color=None,
-    points=None,
-):
+def plot_map(csv_file_path=None, str="not specified value", title="Default", range_color = None, points = None):
+    """
+    Plot a choropleth map based on the provided data.
+
+    Parameters:
+    - csv_file_path (str): Path to the CSV file containing the data. If None, dummy data will be used.
+    - str (str): The column name in the CSV file to be used for coloring the map. Default is "not specified value".
+    - title (str): The title of the map. Default is "Default".
+    - range_color (list): The range of values to be used for coloring the map. If None, the range will be determined automatically.
+    - points (list): List of coordinates (latitude, longitude) to be plotted as scatter points on the map. Default is None.
+
+    Returns:
+    None
+    """
+
     if csv_file_path is None:
         # Dummy data for the regions of France
         values = np.random.rand(len(regions_france))  # Random values for demonstration
@@ -135,24 +143,7 @@ def plot_map(
 
     # Show the figure
     fig.show()
-
-
-def salary():
-    # df = pd.read_csv("data/salary.csv")
-    # df = df.groupby("REGION")["SALARY/HOUR"].median().reset_index()
-    # df.columns = ["region_name", "median_salary"]
-    # df.to_csv("data/median_salary.csv", index=False)
-
-    plot_map(
-        csv_file_path="data/updated_median_salary.csv",
-        str="median_salary",
-        range_color=None,
-        title="Median salary/hour [€] per region in France",
-    )
-
-
+    
 if __name__ == "__main__":
-    # filepath = "data/min_zeros_summary.csv"
-    # plot_map(csv_file_path=filepath, str="zeros", range_color=[0, 1000], points = coords_all_stores)
+    pass
 
-    salary()
