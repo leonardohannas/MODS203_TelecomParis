@@ -14,7 +14,7 @@ def main():
             "product_id",
             "category",
             "subcategory",
-            "sub_sub_category",
+            "subsubcategory",
             "product name",
             "price/unity [€/u]",
             "price [€]",
