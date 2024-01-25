@@ -5,7 +5,13 @@ import plotly.graph_objs as go
 from data_map import coords_all_stores, coords_scraped_stores, regions_france
 
 
-def plot_map(csv_file_path=None, str="not specified value", title="Default", range_color = None, points = None):
+def plot_map(
+    csv_file_path=None,
+    str="not specified value",
+    title="Default",
+    range_color=None,
+    points=None,
+):
     """
     Plot a choropleth map based on the provided data.
 
@@ -143,7 +149,7 @@ def plot_map(csv_file_path=None, str="not specified value", title="Default", ran
 
     # Show the figure
     fig.show()
-    
+
+
 if __name__ == "__main__":
     pass
-
