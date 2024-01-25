@@ -65,7 +65,7 @@ def nutri_histogram():
         linewidth=0.5,
         zorder=3,
     )
-    plt.xlabel("Mean Nutri-Score")
+    plt.xlabel("Mean Nutri-Score [1:E, 2:D, 3:C, 4:B, 5:A]")
     plt.ylabel("Category")
     plt.title(
         "Mean Nutri-Score Comparison Across Regions for Each Category (Sorted by Mean Nutri-Score)"
